@@ -3,29 +3,51 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+  --text: #D9D9D9;
+  --gradient-start: #000000;
+  --gradient-end: #03101D;
 
-@media (prefers-color-scheme: dark) {
+  --font-size--1: clamp(0.9375rem, 0.9196rem + 0.0893cqi, 1rem);
+  --font-size-0: clamp(1.125rem, 1.0893rem + 0.1786cqi, 1.25rem);
+  --font-size-1: clamp(1.35rem, 1.2893rem + 0.3036cqi, 1.5625rem);
+  --font-size-2: clamp(1.62rem, 1.5248rem + 0.4759cqi, 1.9531rem);
+  --font-size-3: clamp(1.944rem, 1.8019rem + 0.7106cqi, 2.4414rem);
+  --font-size-4: clamp(2.3328rem, 2.1274rem + 1.0271cqi, 3.0518rem);
+  --font-size-5: clamp(2.7994rem, 2.5093rem + 1.4505cqi, 3.8147rem);
+}
+@media (prefers-color-scheme: light) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --text: #D9D9D9;
+    --gradient-start: #000000;
+    --gradient-end: #03101D;
   }
 }
-
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--text);
   background: linear-gradient(
       to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      var(--gradient-start),
+      var(--gradient-end)
+    );
+    h1 {
+      font-size: var(--font-size-5);
+    }
+    h2 {
+      font-size: var(--font-size-4);
+    }
+    h3 {
+      font-size: var(--font-size-3);
+    }
+    h4 {
+      font-size: var(--font-size-2);
+    }
+    p {
+      font-size: var(--font-size-1);
+    }
+    .small {
+      font-size: var(--font-size--1);
+    }
 }
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
