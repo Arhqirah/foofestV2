@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Ticket from '@/app/components/form/Ticket';
 
 function FooForm() {
   const router = useRouter();
@@ -7,6 +8,9 @@ function FooForm() {
   const handleClick = () => {
     router.push('/');
   };
+
+  const vipBenefits = ['Priority seating', 'Free drinks', 'Meet and greet'];
+  const regularBenefits = ['Standard seating', 'Access to event'];
 
   const [stage, setStage] = useState(1);
   const [formData, setFormData] = useState({
@@ -18,6 +22,11 @@ function FooForm() {
     paymentDetails: { creditCardNumber: '' },
   });
 
+  const [expandedTickets, setExpandedTickets] = useState({
+    Bonde: false,
+    Viking: false,
+  });
+
   const nextStage = () => setStage(stage + 1);
   const prevStage = () => setStage(stage - 1);
 
@@ -25,28 +34,47 @@ function FooForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const toggleExpand = (type) => {
+    setExpandedTickets((prevState) => ({
+      Bonde: type === 'Bonde' ? !prevState.Bonde : false,
+      Viking: type === 'Viking' ? !prevState.Viking : false,
+    }));
+  };
+
   return (
     <div className="p-4 flex flex-col items-center">
       {stage === 1 && (
         <div>
           <h2 className="text-lg font-bold">Vælg billettype</h2>
-          <div className="flex justify-evenly">
-            <button
+          <div className="flex flex-row justify-evenly gap-4">
+            <Ticket
+              type="Bonde"
+              name="BONDE"
+              price="FRA 799.-"
+              icon="/assets/icons/Bonde150.webp"
+              benefits={regularBenefits}
+              isExpanded={expandedTickets.Bonde}
               onClick={() => {
-                setFormData({ ...formData, ticketType: 'bonde' });
+                setFormData({ ...formData, ticketType: 'Bonde' });
                 nextStage();
               }}
-            >
-              Bonde
-            </button>
-            <button
+              toggleExpand={() => toggleExpand('Bonde')}
+              borderColor="border-brown"
+            />
+            <Ticket
+              type="Viking"
+              name="VIKING"
+              price="FRA 1299.-"
+              benefits={vipBenefits}
+              icon="/assets/icons/Viking150.webp"
+              isExpanded={expandedTickets.Viking}
               onClick={() => {
-                setFormData({ ...formData, ticketType: 'viking' });
+                setFormData({ ...formData, ticketType: 'Viking' });
                 nextStage();
               }}
-            >
-              Viking
-            </button>
+              toggleExpand={() => toggleExpand('Viking')}
+              borderColor="border-gold"
+            />
           </div>
         </div>
       )}
