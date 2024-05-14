@@ -7,9 +7,9 @@ module.exports = {
   ],
   theme: {
     backgroundImage: {
-      // 'header': "url('./assets/#')",
-      // 'footer': "url('./assets/#')",
-      // 'hero': "url('./assets/#')",
+       'header': "url('/assets/img/CLOUDS.webp')",
+       'footer': "url('./assets/img/FooterSmoke.webp')",
+       'hero': "url('./assets/img/FooFestLogo.webp')",
     },
     fontSize: {
           sm: "var(--font-size--1)",

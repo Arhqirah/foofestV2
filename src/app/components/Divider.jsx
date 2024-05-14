@@ -1,6 +1,9 @@
+import Image from "next/image";
 function Divider() {
   return (
-    <div className="bg-repeat-x h-36 w-full bg-green-dark"></div>
+    <div className="bg-repeat-x w-full">
+       <Image className="w-full" src={"/assets/img/divider.webp"} alt={"logo"} width={900} height={600}></Image>
+    </div>
   )
 }
 
