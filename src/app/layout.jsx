@@ -2,6 +2,8 @@ import { Skranji } from "next/font/google";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+
+
 import "./globals.css";
 
 const skranji = Skranji({ weight: ["400", "700"], subsets: ["latin"]});

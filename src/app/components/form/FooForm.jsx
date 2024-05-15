@@ -20,7 +20,6 @@ function FooForm() {
     tents: { twoMan: 0, threeMan: 0 },
     extras: { item1: false, item2: false },
     personalInfo: [],
-    paymentDetails: { creditCardNumber: '' },
   });
 
   const [expandedTickets, setExpandedTickets] = useState({
@@ -28,7 +27,52 @@ function FooForm() {
     Viking: false,
   });
 
-  const nextStage = () => setStage(stage + 1);
+  const [errors, setErrors] = useState({});
+
+  const validateStage = () => {
+    let isValid = true;
+    let newErrors = {};
+
+  if (stage === 2) {
+      if (totalTickets === 0) {
+        newErrors.ticketQuantity = 'Vælg mindst én billet';
+        isValid = false;
+      }
+    } else if (stage === 3) {
+      if (!formData.camp) {
+        newErrors.camp = 'Vælg en camp';
+        isValid = false;
+      }
+    } else if (stage === 4) {
+      formData.personalInfo.forEach((info, index) => {
+        if (!info.firstName || !info.lastName || !info.email || !info.phone) {
+          newErrors[`ticketInfo${index}`] = 'Udfyld alle felter for hver billet';
+          isValid = false;
+        } else {
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(info.email)) {
+            newErrors[`ticketInfo${index}`] = 'Udfyld en gyldig emailadresse';
+            isValid = false;
+          }
+          const phonePattern = /^[0-9]+$/;
+          if (!phonePattern.test(info.phone)) {
+            newErrors[`ticketInfo${index}`] = 'Udfyld et gyldigt telefonnummer';
+            isValid = false;
+          }
+        }
+      });
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const nextStage = () => {
+    if (validateStage()) {
+      setStage(stage + 1);
+    }
+  };
+
   const prevStage = () => setStage(stage - 1);
 
   const totalTickets = formData.quantities.viking + formData.quantities.bonde;
@@ -48,20 +92,17 @@ function FooForm() {
 
   const decrementTicket = (type) => {
     setFormData((prevData) => {
-      const updatedPersonalInfo = prevData.personalInfo.filter((info, index) => {
-        if (info.ticketType === type) {
-          if (formData.quantities[type] > 0) {
-            formData.quantities[type] -= 1;
-            return false;
-          }
-        }
-        return true;
-      });
+      const updatedPersonalInfo = [...prevData.personalInfo];
+      let updatedQuantity = prevData.quantities[type];
+      if (updatedQuantity > 0) {
+        updatedPersonalInfo.splice(updatedPersonalInfo.findIndex(info => info.ticketType === type), 1);
+        updatedQuantity -= 1;
+      }
       return {
         ...prevData,
         quantities: {
           ...prevData.quantities,
-          [type]: prevData.quantities[type] > 0 ? prevData.quantities[type] - 1 : 0,
+          [type]: updatedQuantity,
         },
         personalInfo: updatedPersonalInfo,
       };
@@ -161,6 +202,7 @@ function FooForm() {
               borderColor="border-gold"
             />
           </div>
+          {errors.ticketType && <p className="text-blue">{errors.ticketType}</p>}
         </div>
       )}
 
@@ -199,6 +241,7 @@ function FooForm() {
                 </div>
               </div>
             </div>
+            {errors.ticketQuantity && <p className="text-blue">{errors.ticketQuantity}</p>}
             <button onClick={nextStage} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Videre
             </button>
@@ -252,6 +295,7 @@ function FooForm() {
                   </button>
                 </div>
               </div>
+              {errors.camp && <p className="text-blue">{errors.camp}</p>}
               <div className="flex flex-col mb-4">
                 <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
                 <div className="flex items-center gap-4">
@@ -350,35 +394,45 @@ function FooForm() {
                 <div key={index} className="border-b pb-4 mb-4">
                   <h3 className="font-semibold mb-2">{info.ticketType.toUpperCase()} Billet</h3>
                   <div className="flex flex-col gap-2">
+                    <label htmlFor={`firstName-${index}`} className="font-semibold">Fornavn</label>
                     <input
+                      id={`firstName-${index}`}
                       type="text"
                       placeholder="Fornavn"
                       value={info.firstName}
                       onChange={(e) => handlePersonalInfoChange(index, 'firstName', e.target.value)}
                       className="border px-2 py-1"
                     />
+                    <label htmlFor={`lastName-${index}`} className="font-semibold">Efternavn</label>
                     <input
+                      id={`lastName-${index}`}
                       type="text"
                       placeholder="Efternavn"
                       value={info.lastName}
                       onChange={(e) => handlePersonalInfoChange(index, 'lastName', e.target.value)}
                       className="border px-2 py-1"
                     />
+                    <label htmlFor={`email-${index}`} className="font-semibold">Email</label>
                     <input
+                      id={`email-${index}`}
                       type="email"
                       placeholder="Email"
                       value={info.email}
                       onChange={(e) => handlePersonalInfoChange(index, 'email', e.target.value)}
                       className="border px-2 py-1"
                     />
+                    <label htmlFor={`phone-${index}`} className="font-semibold">Telefonnummer</label>
                     <input
+                      id={`phone-${index}`}
                       type="tel"
                       placeholder="Telefonnummer"
                       value={info.phone}
                       onChange={(e) => handlePersonalInfoChange(index, 'phone', e.target.value)}
                       className="border px-2 py-1"
+                      pattern="[0-9]*"
                     />
                   </div>
+                  {errors[`ticketInfo${index}`] && <p className="text-blue">{errors[`ticketInfo${index}`]}</p>}
                 </div>
               ))}
             </div>
@@ -422,18 +476,11 @@ function FooForm() {
       {stage === 5 && (
         <div>
           <button onClick={prevStage}>Tilbage</button>
-          <button onClick={nextStage}>Videre</button>
-        </div>
-      )}
-
-      {stage === 6 && (
-        <div>
-          <button onClick={prevStage}>Tilbage</button>
           <button onClick={nextStage}>Confirm and Pay</button>
         </div>
       )}
 
-      {stage === 7 && (
+      {stage === 6 && (
         <div>
           <h2 className="text-lg font-bold">TAK FOR DIT KØB</h2>
           <h3>

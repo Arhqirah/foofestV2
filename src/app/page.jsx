@@ -3,6 +3,7 @@ import Link from "next/link";
 import Section from "./components/Section";
 import Divider from "./components/Divider";
 import Image from "next/image";
+import"react-credit-cards-2"
 import { Fragment } from "react";
 
 export default async function LandingPage() {
