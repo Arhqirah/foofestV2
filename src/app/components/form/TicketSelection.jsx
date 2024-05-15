@@ -35,7 +35,7 @@ const TicketSelection = ({ formData, setFormData, nextStage, toggleExpand, expan
           borderColor="border-gold"
         />
       </div>
-      {errors.ticketType && <p className="text-red-500">{errors.ticketType}</p>}
+      {errors.ticketType && <p className="text-orange">{errors.ticketType}</p>}
     </div>
   );
 };

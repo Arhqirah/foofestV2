@@ -26,7 +26,7 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
           <div className="flex flex-col items-center ml-4">
             <div className="flex flex-col items-center">
               <h3 className="text-xl font-bold">{name}</h3>
-              <p className="text-gray-500">{price}</p>
+              <p className="text-grey-dark">{price}</p>
             </div>
             <button onClick={toggleExpand} className="mt-4">
               {isExpanded ? '-' : '+'}
@@ -51,7 +51,7 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
           </ul>
           <button
             onClick={onClick}
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="mt-4 bg-orange hover:bg-orange-darker text-white font-bold py-2 px-4 rounded"
           >
             Select {name}
           </button>

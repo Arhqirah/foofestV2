@@ -35,12 +35,7 @@ function FooForm() {
     let isValid = true;
     let newErrors = {};
 
-    if (stage === 1) {
-      if (!formData.ticketType) {
-        newErrors.ticketType = 'Vælg en billettype';
-        isValid = false;
-      }
-    } else if (stage === 2) {
+    if (stage === 2) {
       if (totalTickets === 0) {
         newErrors.ticketQuantity = 'Vælg mindst én billet';
         isValid = false;
@@ -48,6 +43,10 @@ function FooForm() {
     } else if (stage === 3) {
       if (!formData.camp) {
         newErrors.camp = 'Vælg en camp';
+        isValid = false;
+      }
+      if (totalTentCapacity < totalTickets) {
+        newErrors.tents = 'Vælg nok teltpladser til alle personer';
         isValid = false;
       }
     } else if (stage === 4) {
@@ -83,6 +82,7 @@ function FooForm() {
   const prevStage = () => setStage(stage - 1);
 
   const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+  const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
 
   const incrementTicket = (type) => {
     if (totalTickets < 10) {
@@ -131,7 +131,7 @@ function FooForm() {
         ...prevData,
         tents: {
           ...prevData.tents,
-          [name]: parseInt(value),
+          [name]: Math.max(0, parseInt(value) || 0),
         },
       }));
     } else {
@@ -174,6 +174,11 @@ function FooForm() {
     return ticketPrice + tentPrice + extrasPrice;
   };
 
+  const handlePayment = (paymentDetails) => {
+    console.log('Payment details:', paymentDetails);
+    nextStage();
+  };
+
   return (
     <div className="p-4 flex flex-col items-center">
       {stage === 1 && (
@@ -206,6 +211,7 @@ function FooForm() {
           handleCampSelection={handleCampSelection}
           handleInputChange={handleInputChange}
           errors={errors}
+          setErrors={setErrors}
         />
       )}
       {stage === 4 && (
@@ -221,7 +227,7 @@ function FooForm() {
       {stage === 5 && (
         <Confirmation
           prevStage={prevStage}
-          nextStage={nextStage}
+          handlePayment={handlePayment}
         />
       )}
       {stage === 6 && (

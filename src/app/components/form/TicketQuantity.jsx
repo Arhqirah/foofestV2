@@ -4,7 +4,6 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, i
   return (
     <div className="flex flex-row w-full max-w-4xl mx-auto mt-4">
       <div className="w-2/3 p-4">
-        <button onClick={prevStage} className="mb-4">Tilbage</button>
         <h2 className="text-lg font-bold">Vælg antal billetter</h2>
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
@@ -36,10 +35,8 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, i
             </div>
           </div>
         </div>
-        {errors.ticketQuantity && <p className="text-red-500">{errors.ticketQuantity}</p>}
-        <button onClick={nextStage} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Videre
-        </button>
+        {errors.ticketQuantity && <p className="text-orange">{errors.ticketQuantity}</p>}
+       
       </div>
       <div className="w-1/3 p-4 border-l sticky top-0">
         <h2 className="text-lg font-bold">Din kurv</h2>
@@ -56,6 +53,10 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, i
           <p>
             {(formData.quantities.viking * 1299) + (formData.quantities.bonde * 799)} DKK
           </p>
+          <div className="mt-4 flex flex-col gap-2">
+          <button onClick={prevStage} className="bg-green hover:bg-green-darker text-white font-bold py-2 px-4 rounded">Tilbage</button>
+          <button onClick={nextStage} className="bg-orange hover:bg-orange-darker text-white font-bold py-2 px-4 rounded">Videre</button>
+        </div>
         </div>
       </div>
     </div>

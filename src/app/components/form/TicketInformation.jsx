@@ -4,7 +4,6 @@ const TicketInformation = ({ formData, setFormData, nextStage, prevStage, handle
   return (
     <div className="flex flex-row w-full max-w-4xl mx-auto mt-4">
       <div className="w-2/3 p-4">
-        <button onClick={prevStage} className="mb-4">Tilbage</button>
         <h2 className="text-lg font-bold">Indtast Billetinformation</h2>
         <div className="flex flex-col gap-4">
           {formData.personalInfo.map((info, index) => (
@@ -53,9 +52,6 @@ const TicketInformation = ({ formData, setFormData, nextStage, prevStage, handle
             </div>
           ))}
         </div>
-        <button onClick={nextStage} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Videre
-        </button>
       </div>
       <div className="w-1/3 p-4 border-l sticky top-0">
         <h2 className="text-lg font-bold">Din kurv</h2>
@@ -85,6 +81,10 @@ const TicketInformation = ({ formData, setFormData, nextStage, prevStage, handle
         <div className="mt-4">
           <h3 className="font-semibold">Total Pris:</h3>
           <p>{(formData.quantities.viking * 1299) + (formData.quantities.bonde * 799) + (formData.tents.twoMan * 299) + (formData.tents.threeMan * 399) + (formData.extras.item1 ? 249 : 0) + (formData.extras.item2 ? 39 : 0)} DKK</p>
+        </div>
+        <div className="mt-4 flex flex-col gap-2">
+          <button onClick={prevStage} className="bg-green hover:bg-green-darker text-white font-bold py-2 px-4 rounded">Tilbage</button>
+          <button onClick={nextStage} className="bg-orange hover:bg-orange-darker text-white font-bold py-2 px-4 rounded">Videre</button>
         </div>
       </div>
     </div>
