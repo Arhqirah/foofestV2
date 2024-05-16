@@ -189,6 +189,7 @@ function FooForm() {
           toggleExpand={toggleExpand}
           expandedTickets={expandedTickets}
           errors={errors}
+          calculateTotalPrice={calculateTotalPrice}
         />
       )}
       {stage === 2 && (
@@ -200,6 +201,7 @@ function FooForm() {
           errors={errors}
           incrementTicket={incrementTicket}
           decrementTicket={decrementTicket}
+          calculateTotalPrice={calculateTotalPrice}
         />
       )}
       {stage === 3 && (
@@ -212,6 +214,7 @@ function FooForm() {
           handleInputChange={handleInputChange}
           errors={errors}
           setErrors={setErrors}
+          calculateTotalPrice={calculateTotalPrice}
         />
       )}
       {stage === 4 && (
@@ -222,12 +225,15 @@ function FooForm() {
           prevStage={prevStage}
           handlePersonalInfoChange={handlePersonalInfoChange}
           errors={errors}
+          calculateTotalPrice={calculateTotalPrice}
         />
       )}
       {stage === 5 && (
         <Confirmation
+          formData={formData}
           prevStage={prevStage}
           handlePayment={handlePayment}
+          calculateTotalPrice={calculateTotalPrice}
         />
       )}
       {stage === 6 && (
