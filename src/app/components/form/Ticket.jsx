@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggleExpand, borderColor }) => {
   const detailsRef = useRef(null);
@@ -15,9 +16,9 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
   return (
     <div className="w-full max-w-4xl mx-auto mb-4 flex">
       <div
-        className={`p-4 rounded-md shadow-md border-4 transition-all duration-300 ${
+        className={`p-8 rounded-md shadow-md border-4 transition-all duration-300 ${
           isExpanded ? 'border-transparent' : `border-3 ${borderColor}`
-        } flex items-center`}
+        } flex items-center relative`}
       >
         <div className="flex flex-col items-center transition-all duration-300">
           <div className="flex-shrink-0 w-auto h-50 flex items-center justify-center">
@@ -26,13 +27,16 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
           <div className="flex flex-col items-center ml-4">
             <div className="flex flex-col items-center">
               <h3 className="text-xl font-bold">{name}</h3>
-              <p className="text-grey-dark">{price}</p>
+              <p className="text-grey-dark mb-4">{price}</p>
             </div>
-            <button onClick={toggleExpand} className="mt-4">
-              {isExpanded ? '-' : '+'}
-            </button>
           </div>
         </div>
+        <button
+          onClick={toggleExpand}
+          className="absolute  right-4 bottom-4 flex items-center justify-center rounded-full"
+        >
+          {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+        </button>
       </div>
       <div
         ref={detailsRef}
@@ -42,7 +46,7 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
           opacity: isExpanded ? '1' : '0',
         }}
       >
-        <div className="p-4 border-l border-gray-300 h-full w-52">
+        <div className="p-4 h-full w-52">
           <h4 className="font-semibold">Benefits:</h4>
           <ul className="list-disc list-inside">
             {benefits.map((benefit, index) => (

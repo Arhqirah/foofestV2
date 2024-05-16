@@ -7,8 +7,12 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, increment
       <div className="w-full md:w-2/3 p-4">
         <h2 className="text-lg font-bold mb-4">Vælg antal billetter</h2>
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <label className="font-semibold">Viking Billetter (1299 DKK):</label>
+        <div className="flex items-center justify-between">
+  <label className="font-semibold flex items-center">
+    <img src="/assets/icons/Viking150.webp" alt="Viking Icon" className="w-auto h-12 mx-2" />
+    Viking Billetter (1299 DKK):
+  </label>
+
             <div className="flex items-center gap-2">
               <button onClick={() => decrementTicket('viking')} className="px-2">-</button>
               <input
@@ -22,7 +26,7 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, increment
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <label className="font-semibold">Bonde Billetter (799 DKK):</label>
+            <label className="font-semibold flex items-center"><img src="/assets/icons/Bonde150.webp" alt="Viking Icon" className="w-auto h-12 mx-2" />Bonde Billetter (799 DKK):</label>
             <div className="flex items-center gap-2">
               <button onClick={() => decrementTicket('bonde')} className="px-2">-</button>
               <input

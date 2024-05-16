@@ -13,6 +13,7 @@ export const metadata = {
   description: "The Festival that keeps going 24/7 365 days of every year!",
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="da">

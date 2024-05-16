@@ -92,6 +92,10 @@ module.exports = {
       },
       "red": {
         DEFAULT:"#b22222",
+      },
+      "black":{
+        light: "#1B1B1B",
+        DEFAULT: "#000000",
       }
     },
     extend: {

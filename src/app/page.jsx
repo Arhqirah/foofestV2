@@ -15,6 +15,7 @@ return (
   <Section  title={null} customStyle="items-center justify-center">
     <Image src={"/assets/img/FooFestLogo.webp"} alt={"logo"} width={900} height={600}></Image>
   <p>Til Valhalla og tilbage, festivalen der varer evigt</p>
+  <Link className="bg-black-light border-orange border-2 hover:bg-black rounded-full w-fit py-2 px-4 text-xl m-2 mt-6 pt-4 pb-4" href="./form" prefetch={false}>KØB BILLETTER</Link>
   </Section>
   <Divider></Divider>
       <Section>

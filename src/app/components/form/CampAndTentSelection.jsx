@@ -28,13 +28,18 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
   };
 
   const incrementTent = (type) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tents: {
-        ...prevData.tents,
-        [type]: prevData.tents[type] + 1,
-      },
-    }));
+    setFormData((prevData) => {
+      if (prevData.tents[type] < 10) {
+        return {
+          ...prevData,
+          tents: {
+            ...prevData.tents,
+            [type]: prevData.tents[type] + 1,
+          },
+        };
+      }
+      return prevData;
+    });
   };
 
   const decrementTent = (type) => {
@@ -45,6 +50,45 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
         [type]: Math.max(0, prevData.tents[type] - 1),
       },
     }));
+  };
+
+  const handleInputChangeWithLimit = (e) => {
+    const { name, value, type, checked } = e.target;
+    let newErrors = { ...errors };
+
+    if (type === 'checkbox') {
+      setFormData((prevData) => ({
+        ...prevData,
+        extras: {
+          ...prevData.extras,
+          [name]: checked,
+        },
+      }));
+    } else if (name === 'twoMan' || name === 'threeMan') {
+      let newValue = parseInt(value) || 0;
+      if (newValue > 10) {
+        newValue = 10;
+      }
+
+      const newTents = {
+        ...formData.tents,
+        [name]: newValue,
+      };
+      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
+
+     
+
+      setErrors(newErrors);
+      setFormData((prevData) => ({
+        ...prevData,
+        tents: newTents,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   return (
@@ -59,21 +103,21 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                 <CampButton
                   selected={formData.camp === 'MIDGAARD'}
                   onClick={() => handleCampSelection('MIDGAARD')}
-                  borderColor="border-green"
+                  borderColor={formData.camp === 'MIDGAARD' ? 'border-green' : 'border-green-dark'}
                   icon="/assets/icons/Midgaard40.webp"
                   name="MIDGAARD"
                 />
                 <CampButton
                   selected={formData.camp === 'Vanaheim'}
                   onClick={() => handleCampSelection('Vanaheim')}
-                  borderColor="border-yellow"
+                  borderColor={formData.camp === 'Vanaheim' ? 'border-yellow' : 'border-yellow-dark'}
                   icon="/assets/icons/Vanaheim40.webp"
                   name="VANAHEIM"
                 />
                 <CampButton
                   selected={formData.camp === 'Alfheim'}
                   onClick={() => handleCampSelection('Alfheim')}
-                  borderColor="border-blue"
+                  borderColor={formData.camp === 'Alfheim' ? 'border-blue' : 'border-blue-dark'}
                   icon="/assets/icons/Alfheim40.webp"
                   name="ALFHEIM"
                 />
@@ -84,7 +128,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
             <div className="flex flex-col mb-4">
               <h2 className="flex items-baseline text-lg font-bold">
                 Vælg dit Telt 
-                <img src="/assets/icons/Tent55.webp" alt="Tent Icon" className="inline-block ml-2  align-baseline" />
+                <img src="/assets/icons/Tent55.webp" alt="Tent Icon" className="inline-block ml-2 align-baseline" />
               </h2>
               <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
               <div className="flex flex-col gap-4">
@@ -127,7 +171,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     id="item1"
                     name="item1"
                     checked={formData.extras.item1}
-                    onChange={handleInputChange}
+                    onChange={handleInputChangeWithLimit}
                     className="mr-2"
                   />
                   <label htmlFor="item1">Ekstra item 1 (249 DKK)</label>
@@ -138,7 +182,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     id="item2"
                     name="item2"
                     checked={formData.extras.item2}
-                    onChange={handleInputChange}
+                    onChange={handleInputChangeWithLimit}
                     className="mr-2"
                   />
                   <label htmlFor="item2">Ekstra item 2 (39 DKK)</label>

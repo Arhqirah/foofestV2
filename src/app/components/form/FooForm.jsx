@@ -35,6 +35,9 @@ function FooForm() {
     let isValid = true;
     let newErrors = {};
 
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+    const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
+
     if (stage === 2) {
       if (totalTickets === 0) {
         newErrors.ticketQuantity = 'Vælg mindst én billet';
@@ -47,6 +50,10 @@ function FooForm() {
       }
       if (totalTentCapacity < totalTickets) {
         newErrors.tents = 'Vælg nok teltpladser til alle personer';
+        isValid = false;
+      }
+      if (totalTentCapacity > totalTickets + 2) {
+        newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+2 er tilladt)';
         isValid = false;
       }
     } else if (stage === 4) {
@@ -81,10 +88,8 @@ function FooForm() {
 
   const prevStage = () => setStage(stage - 1);
 
-  const totalTickets = formData.quantities.viking + formData.quantities.bonde;
-  const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
-
   const incrementTicket = (type) => {
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
     if (totalTickets < 10) {
       setFormData((prevData) => ({
         ...prevData,
@@ -118,6 +123,9 @@ function FooForm() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+    let newErrors = { ...errors };
+
     if (type === 'checkbox') {
       setFormData((prevData) => ({
         ...prevData,
@@ -127,12 +135,24 @@ function FooForm() {
         },
       }));
     } else if (name === 'twoMan' || name === 'threeMan') {
+      const newTents = {
+        ...formData.tents,
+        [name]: Math.max(0, parseInt(value) || 0),
+      };
+      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
+
+      if (totalTentCapacity < totalTickets) {
+        newErrors.tents = 'Vælg nok teltpladser til alle personer';
+      } else if (totalTentCapacity > totalTickets + 2) {
+        newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+1 er tilladt)';
+      } else {
+        delete newErrors.tents;
+      }
+
+      setErrors(newErrors);
       setFormData((prevData) => ({
         ...prevData,
-        tents: {
-          ...prevData.tents,
-          [name]: Math.max(0, parseInt(value) || 0),
-        },
+        tents: newTents,
       }));
     } else {
       setFormData((prevData) => ({
@@ -177,6 +197,10 @@ function FooForm() {
   const handlePayment = (paymentDetails) => {
     console.log('Payment details:', paymentDetails);
     nextStage();
+  };
+
+  const getAllEmails = () => {
+    return formData.personalInfo.map(info => info.email);
   };
 
   return (
@@ -238,6 +262,7 @@ function FooForm() {
       )}
       {stage === 6 && (
         <ThankYou
+          emails={getAllEmails()}
           handleClick={handleClick}
         />
       )}
