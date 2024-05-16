@@ -5,6 +5,7 @@ import Divider from "./components/Divider";
 import Image from "next/image";
 import"react-credit-cards-2"
 import { Fragment } from "react";
+import ClickableCircle from "./components/ClickableCircle";
 
 export default async function LandingPage() {
   const bands = await getBands();
@@ -28,6 +29,7 @@ return (
         </div>
       </Section>
       <Section>
+        <ClickableCircle></ClickableCircle>
         {/*  */}
         {/* <h3>The bands</h3>
         {midgard.map((m) => {

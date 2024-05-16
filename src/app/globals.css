@@ -51,6 +51,14 @@ body {
       font-size: var(--font-size--1);
     }
 }
+.clip-wedge {
+  clip-path: polygon(50% 50%, 100% 100%, 0% 100%);
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+}
+
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

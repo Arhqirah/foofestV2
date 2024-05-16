@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import TicketSelection from '@/app/components/form/TicketSelection';
 import TicketQuantity from '@/app/components/form/TicketQuantity';
 import CampAndTentSelection from '@/app/components/form/CampAndTentSelection';
@@ -203,69 +204,84 @@ function FooForm() {
     return formData.personalInfo.map(info => info.email);
   };
 
+  const variants = {
+    initial: { opacity: 0, x: -100 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
+  };
+
   return (
     <div className="p-4 flex flex-col items-center">
-      {stage === 1 && (
-        <TicketSelection
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          toggleExpand={toggleExpand}
-          expandedTickets={expandedTickets}
-          errors={errors}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      )}
-      {stage === 2 && (
-        <TicketQuantity
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          errors={errors}
-          incrementTicket={incrementTicket}
-          decrementTicket={decrementTicket}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      )}
-      {stage === 3 && (
-        <CampAndTentSelection
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          handleCampSelection={handleCampSelection}
-          handleInputChange={handleInputChange}
-          errors={errors}
-          setErrors={setErrors}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      )}
-      {stage === 4 && (
-        <TicketInformation
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          handlePersonalInfoChange={handlePersonalInfoChange}
-          errors={errors}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      )}
-      {stage === 5 && (
-        <Confirmation
-          formData={formData}
-          prevStage={prevStage}
-          handlePayment={handlePayment}
-          calculateTotalPrice={calculateTotalPrice}
-        />
-      )}
-      {stage === 6 && (
-        <ThankYou
-          emails={getAllEmails()}
-          handleClick={handleClick}
-        />
-      )}
+      <motion.div
+        key={stage}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={variants}
+        transition={{ duration: 0.5 }}
+      >
+        {stage === 1 && (
+          <TicketSelection
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            toggleExpand={toggleExpand}
+            expandedTickets={expandedTickets}
+            errors={errors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 2 && (
+          <TicketQuantity
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            errors={errors}
+            incrementTicket={incrementTicket}
+            decrementTicket={decrementTicket}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 3 && (
+          <CampAndTentSelection
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            handleCampSelection={handleCampSelection}
+            handleInputChange={handleInputChange}
+            errors={errors}
+            setErrors={setErrors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 4 && (
+          <TicketInformation
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            handlePersonalInfoChange={handlePersonalInfoChange}
+            errors={errors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 5 && (
+          <Confirmation
+            formData={formData}
+            prevStage={prevStage}
+            handlePayment={handlePayment}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 6 && (
+          <ThankYou
+            emails={getAllEmails()}
+            handleClick={handleClick}
+          />
+        )}
+      </motion.div>
     </div>
   );
 }

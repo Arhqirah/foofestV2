@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Sidebar = () => {
@@ -9,7 +10,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <button
         className="p-2 bg-black border-orange border-2 text-white rounded-md absolute top-4 right-4 z-100 flex flex-col items-center justify-center"
         onClick={toggleSidebar}
@@ -19,7 +20,7 @@ const Sidebar = () => {
         <div className="block w-6 h-0.5 bg-white my-1 rounded-full"></div>
       </button>
       <div
-        className={`fixed bottom-0 right-0 h-full w-80 text-white transform ${
+        className={`fixed bottom-0 z-50 right-0 h-full w-80 text-white transform ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } transition-transform duration-300 ease-in-out`}
         style={{
@@ -27,7 +28,7 @@ const Sidebar = () => {
         }}
       >
         <button
-          className="p-2 m-4 bg-red rounded"
+          className="p-2 m-4 bg-black-light border-orange border 2 rounded"
           onClick={toggleSidebar}
         >
           X
@@ -36,7 +37,7 @@ const Sidebar = () => {
           <ul>
             <li className="p-4">
               <div className="flex justify-between items-center border-b border-orange text-lg">
-                <span>NYHEDER</span>
+                <Link href="./#" prefetch={false}>NYHEDER</Link>
               </div>
             </li>
             <li className="p-4">

@@ -93,9 +93,9 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
   return (
     <div className="flex flex-wrap flex-col md:flex-row w-full max-w-4xl mx-auto mt-4">
-      <div className="w-full md:w-2/3 p-4">
+      <div className="w-full md:w-3/5 p-4">
         <form>
-          <h2 className="text-lg font-bold">Vælg en Camp</h2>
+          <h2 className="text-lg font-bold pb-4">Vælg en Camp</h2>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col mb-4">
               <label className="sr-only">Camp</label>
@@ -134,7 +134,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
               <div className="flex flex-col gap-4">
                 <div className="flex items-center">
                   <label htmlFor="twoMan" className="mr-2">2-mands (299 DKK):</label>
-                  <button type="button" onClick={() => decrementTent('twoMan')} className="px-2">-</button>
+                  <button type="button" onClick={() => decrementTent('twoMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
                   <input
                     id="twoMan"
                     type="number"
@@ -143,11 +143,11 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     readOnly
                     className="border px-2 py-1 text-center w-16"
                   />
-                  <button type="button" onClick={() => incrementTent('twoMan')} className="px-2">+</button>
+                  <button type="button" onClick={() => incrementTent('twoMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
                 </div>
                 <div className="flex items-center">
                   <label htmlFor="threeMan" className="mr-2">3-mands (399 DKK):</label>
-                  <button type="button" onClick={() => decrementTent('threeMan')} className="px-2">-</button>
+                  <button type="button" onClick={() => decrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
                   <input
                     id="threeMan"
                     type="number"
@@ -156,7 +156,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     readOnly
                     className="border px-2 py-1 text-center w-16"
                   />
-                  <button type="button" onClick={() => incrementTent('threeMan')} className="px-2">+</button>
+                  <button type="button" onClick={() => incrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
                 </div>
               </div>
               {errors.tents && <p className="text-red mt-2">{errors.tents}</p>}
@@ -174,7 +174,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     onChange={handleInputChangeWithLimit}
                     className="mr-2"
                   />
-                  <label htmlFor="item1">Ekstra item 1 (249 DKK)</label>
+                  <label htmlFor="item1">Grøn Camping (249 DKK)</label>
                 </div>
                 <div className="flex items-center">
                   <input
@@ -185,7 +185,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     onChange={handleInputChangeWithLimit}
                     className="mr-2"
                   />
-                  <label htmlFor="item2">Ekstra item 2 (39 DKK)</label>
+                  <label htmlFor="item2">Vikinge Hat (39 DKK)</label>
                 </div>
               </div>
             </div>

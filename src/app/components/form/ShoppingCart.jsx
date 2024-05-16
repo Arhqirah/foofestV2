@@ -10,7 +10,7 @@ const ShoppingCart = ({ formData, prevStage, nextStage, calculateTotalPrice }) =
   };
 
   return (
-    <div className="w-full md:w-1/3 p-4 border-l md:sticky top-0">
+    <div className="w-full md:w-2/5 p-4 border-l md:sticky top-0">
       <h2 className="text-lg font-bold">
         <img
           src="/assets/icons/ShoppingCart30.webp"
@@ -52,8 +52,8 @@ const ShoppingCart = ({ formData, prevStage, nextStage, calculateTotalPrice }) =
         {formData.tents.threeMan > 0 && (
           <li>{formData.tents.threeMan} x 3-mands telt (399 DKK)</li>
         )}
-        {formData.extras.item1 && <li>Ekstra item 1 (249 DKK)</li>}
-        {formData.extras.item2 && <li>Ekstra item 2 (39 DKK)</li>}
+        {formData.extras.item1 && <li>Grøn Camping (249 DKK)</li>}
+        {formData.extras.item2 && <li>Vikinge Hat (39 DKK)</li>}
       </ul>
       <div className="mt-4">
         <h3 className="font-semibold">Total Pris:</h3>

@@ -14,7 +14,7 @@ const ThankYou = ({ emails, handleClick }) => {
       <p>Eller send os en ravn</p>
       <button
         onClick={handleClick}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-orange hover:bg-orange-darker text-white font-bold py-2 mt-4 px-4 rounded"
       >
         Tilbage til forsiden
       </button>
