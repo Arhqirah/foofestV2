@@ -58,7 +58,7 @@ const TicketInformation = ({ formData, setFormData, nextStage, prevStage, handle
                   />
                 </div>
               </div>
-              {errors[`ticketInfo${index}`] && <p className="text-red-500">{errors[`ticketInfo${index}`]}</p>}
+              {errors[`ticketInfo${index}`] && <p className="text-red">{errors[`ticketInfo${index}`]}</p>}
             </div>
           ))}
         </form>

@@ -35,7 +35,7 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, increment
               <button onClick={() => incrementTicket('bonde')} className="px-2">+</button>
             </div>
           </div>
-          {errors.ticketQuantity && <p className="text-red-500 mt-2">{errors.ticketQuantity}</p>}
+          {errors.ticketQuantity && <p className="text-red mt-2">{errors.ticketQuantity}</p>}
         </div>
       </div>
       <ShoppingCart formData={formData} prevStage={prevStage} nextStage={nextStage} calculateTotalPrice={calculateTotalPrice} />

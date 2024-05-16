@@ -50,97 +50,103 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
   return (
     <div className="flex flex-wrap flex-col md:flex-row w-full max-w-4xl mx-auto mt-4">
       <div className="w-full md:w-2/3 p-4">
-        <h2 className="text-lg font-bold">Vælg en Camp</h2>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col mb-4">
-            <label className="font-semibold mb-2">Camp</label>
-            <div className="flex flex-wrap gap-4">
-              <CampButton
-                selected={formData.camp === 'MIDGAARD'}
-                onClick={() => handleCampSelection('MIDGAARD')}
-                borderColor="border-green"
-                icon="/assets/icons/Midgaard40.webp"
-                name="MIDGAARD"
-              />
-              <CampButton
-                selected={formData.camp === 'Vanaheim'}
-                onClick={() => handleCampSelection('Vanaheim')}
-                borderColor="border-yellow"
-                icon="/assets/icons/Vanaheim40.webp"
-                name="VANAHEIM"
-              />
-              <CampButton
-                selected={formData.camp === 'Alfheim'}
-                onClick={() => handleCampSelection('Alfheim')}
-                borderColor="border-blue"
-                icon="/assets/icons/Alfheim40.webp"
-                name="ALFHEIM"
-              />
+        <form>
+          <h2 className="text-lg font-bold">Vælg en Camp</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col mb-4">
+              <label className="sr-only">Camp</label>
+              <div className="flex flex-wrap gap-4">
+                <CampButton
+                  selected={formData.camp === 'MIDGAARD'}
+                  onClick={() => handleCampSelection('MIDGAARD')}
+                  borderColor="border-green"
+                  icon="/assets/icons/Midgaard40.webp"
+                  name="MIDGAARD"
+                />
+                <CampButton
+                  selected={formData.camp === 'Vanaheim'}
+                  onClick={() => handleCampSelection('Vanaheim')}
+                  borderColor="border-yellow"
+                  icon="/assets/icons/Vanaheim40.webp"
+                  name="VANAHEIM"
+                />
+                <CampButton
+                  selected={formData.camp === 'Alfheim'}
+                  onClick={() => handleCampSelection('Alfheim')}
+                  borderColor="border-blue"
+                  icon="/assets/icons/Alfheim40.webp"
+                  name="ALFHEIM"
+                />
+              </div>
+              {errors.camp && <p className="text-red mt-2">{errors.camp}</p>}
             </div>
-            {errors.camp && <p className="text-red-500 mt-2">{errors.camp}</p>}
-          </div>
 
-          <div className="flex flex-col mb-4">
-            <h2 className="flex items-baseline text-lg font-bold">
-              Vælg dit Telt 
-              <img src="/assets/icons/Tent55.webp" alt="Tent Icon" className="inline-block ml-2  align-baseline" />
-            </h2>
-            <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center">
-                <label className="mr-2">2-mands (299 DKK):</label>
-                <button onClick={() => decrementTent('twoMan')} className="px-2">-</button>
-                <input
-                  type="number"
-                  name="twoMan"
-                  value={formData.tents.twoMan}
-                  readOnly
-                  className="border px-2 py-1 text-center w-16"
-                />
-                <button onClick={() => incrementTent('twoMan')} className="px-2">+</button>
+            <div className="flex flex-col mb-4">
+              <h2 className="flex items-baseline text-lg font-bold">
+                Vælg dit Telt 
+                <img src="/assets/icons/Tent55.webp" alt="Tent Icon" className="inline-block ml-2  align-baseline" />
+              </h2>
+              <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center">
+                  <label htmlFor="twoMan" className="mr-2">2-mands (299 DKK):</label>
+                  <button type="button" onClick={() => decrementTent('twoMan')} className="px-2">-</button>
+                  <input
+                    id="twoMan"
+                    type="number"
+                    name="twoMan"
+                    value={formData.tents.twoMan}
+                    readOnly
+                    className="border px-2 py-1 text-center w-16"
+                  />
+                  <button type="button" onClick={() => incrementTent('twoMan')} className="px-2">+</button>
+                </div>
+                <div className="flex items-center">
+                  <label htmlFor="threeMan" className="mr-2">3-mands (399 DKK):</label>
+                  <button type="button" onClick={() => decrementTent('threeMan')} className="px-2">-</button>
+                  <input
+                    id="threeMan"
+                    type="number"
+                    name="threeMan"
+                    value={formData.tents.threeMan}
+                    readOnly
+                    className="border px-2 py-1 text-center w-16"
+                  />
+                  <button type="button" onClick={() => incrementTent('threeMan')} className="px-2">+</button>
+                </div>
               </div>
-              <div className="flex items-center">
-                <label className="mr-2">3-mands (399 DKK):</label>
-                <button onClick={() => decrementTent('threeMan')} className="px-2">-</button>
-                <input
-                  type="number"
-                  name="threeMan"
-                  value={formData.tents.threeMan}
-                  readOnly
-                  className="border px-2 py-1 text-center w-16"
-                />
-                <button onClick={() => incrementTent('threeMan')} className="px-2">+</button>
-              </div>
+              {errors.tents && <p className="text-red mt-2">{errors.tents}</p>}
             </div>
-            {errors.tents && <p className="text-red-500 mt-2">{errors.tents}</p>}
-          </div>
 
-          <div className="flex flex-col mb-4">
-            <label className="font-semibold mb-2">Ekstra</label>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="item1"
-                  checked={formData.extras.item1}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                <label>Ekstra item 1 (249 DKK)</label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="item2"
-                  checked={formData.extras.item2}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                <label>Ekstra item 2 (39 DKK)</label>
+            <div className="flex flex-col mb-4">
+              <label className="font-semibold mb-2">Ekstra</label>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="item1"
+                    name="item1"
+                    checked={formData.extras.item1}
+                    onChange={handleInputChange}
+                    className="mr-2"
+                  />
+                  <label htmlFor="item1">Ekstra item 1 (249 DKK)</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="item2"
+                    name="item2"
+                    checked={formData.extras.item2}
+                    onChange={handleInputChange}
+                    className="mr-2"
+                  />
+                  <label htmlFor="item2">Ekstra item 2 (39 DKK)</label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
       <ShoppingCart formData={formData} prevStage={prevStage} nextStage={handleNextStage} calculateTotalPrice={calculateTotalPrice} />
     </div>
