@@ -14,7 +14,7 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
   }, [isExpanded]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto mb-4 flex">
+    <div className="w-full max-w-4xl mx-auto mb-4 flex items-center">
       <div
         className={`p-8 rounded-md shadow-md border-4 transition-all duration-300 ${
           isExpanded ? 'border-transparent' : `border-3 ${borderColor}`

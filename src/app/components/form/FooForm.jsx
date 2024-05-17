@@ -211,7 +211,7 @@ function FooForm() {
   };
 
   return (
-    <div className="p-4 flex flex-col items-center">
+    <div className={`p-4 flex flex-col ${stage === 1 || stage === 6 ? 'items-center' : ''}`}>
       <motion.div
         key={stage}
         initial="initial"

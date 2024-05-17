@@ -8,17 +8,17 @@ const ClickableCircle = () => {
         
        
         <Link href="/form" prefetch={false}>
-          <div className="absolute w-60 h-48 hover:bg-yellow duration-300 clip-wedge rotate-180 origin-center transform hover:opacity-100"style={{ top: '35%', left: '-15%' }}></div>
+          <div className="absolute w-[32rem] h-52 hover:backdrop-blur-sm hover:bg-opacity-30 duration-300 clip-wedge rotate-0 origin-center transform hover:opacity-100"style={{ top: '0%', left: '-80%' }}></div>
         </Link>
 
        
         <Link href="/#" prefetch={false}>
-          <div className="absolute w-48 h-48 hover:bg-yellow duration-300 clip-wedge rotate-[90deg] origin-center transform hover:opacity-100"style={{ top: '50%', left: '-40%' }}></div>
+          <div className="absolute w-72 h-48 hover:backdrop-blur-sm duration-300 clip-wedge rotate-[270deg] origin-center transform hover:opacity-100"style={{ top: '50%', left: '-82%' }}></div>
         </Link>
 
         
         <Link href="/camp" prefetch={false}>
-          <div className="absolute w-48 h-48 hover:bg-yellow duration-300 clip-wedge rotate-[270deg] origin-center transform hover:opacity-100"style={{ top: '50%', left: '40%' }}></div>
+          <div className="absolute w-72 h-48 duration-300 hover:backdrop-blur-sm clip-wedge rotate-[90deg] origin-center transform hover:opacity-100"style={{ top: '50%', left: '34%' }}></div>
         </Link>
       </div>
     </div>
