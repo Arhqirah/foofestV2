@@ -6,15 +6,12 @@ import Image from "next/image";
 import "react-credit-cards-2";
 import { Fragment } from "react";
 import ClickableCircle from "./components/ClickableCircle";
+import FancyCampCounter from "./components/FancyCampCounter";
 
 export default async function LandingPage() {
   const data = await getAllBands();
   const stages = await getAllSchedule();
-  const spots = await getAllAvailableSpots();
-// console.log(stages)
-const s = ['Midgaard', 'Vanaheim', 'Alfheim']
-const c = ['text-green', 'text-gold', 'text-blue']
-
+  const stageSpots = await getAllAvailableSpots();
 
 return (
   <div className="flex flex-col">
@@ -41,16 +38,12 @@ return (
       </Section>
       <Section title="FIND DIN CAMP" customStyle="place-items-center">
       <ClickableCircle></ClickableCircle>
+
       <ul className="flex flex-row place-self-center flex-wrap gap-12">
-        {spots.map((stage,index) => {
+        {stageSpots.map((stage,index) => {
           return (
-            <li className={`flex flex-col place-items-center gap-2`} key={stage.area}>
-             <Image src={`/assets/icons/${s[index]}195.webp`} height={195} width={195} alt={stage.area}></Image>
-            <h3 className={`${c[index]}`}>{stage.area}</h3>
-            <p>{stage.available} pladser</p>
-            <Link className="bg-orange w-fit py-2 px-4 rounded" href={`/camp`} prefetch={false}>Til {stage.area}</Link>
-           </li>
-        )
+            <FancyCampCounter key={index} stage={stage} index={index}/>
+          )
          })}
       </ul>
       </Section>
