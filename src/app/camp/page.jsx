@@ -2,6 +2,7 @@ import {getAllAvailableSpots, getAllSchedule} from "../lib/apiCall"
 import Section from "../components/Section";
 import Link from "next/link"
 import ArtistCard from '@/app/components/ArtistCard';
+import ClickableCircle from "../components/ClickableCircle";
 
 const artists = [
   {
@@ -43,10 +44,10 @@ const artists = [
 ];
 async function Camp(params) {
   const {slug} = params
-  const camp = await getSchedule();
+  const camp = await getAllSchedule();
   return (
     <>
-    <FancyNav></FancyNav>
+    <ClickableCircle></ClickableCircle>
     <Section title={null}>
     <h2>Camp page</h2>
     <Link prefetch={false} href={`./#`}>Check a band</Link>
