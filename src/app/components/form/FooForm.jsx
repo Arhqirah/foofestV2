@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import TicketSelection from '@/app/components/form/TicketSelection';
 import TicketQuantity from '@/app/components/form/TicketQuantity';
 import CampAndTentSelection from '@/app/components/form/CampAndTentSelection';
@@ -35,12 +36,10 @@ function FooForm() {
     let isValid = true;
     let newErrors = {};
 
-    if (stage === 1) {
-      if (!formData.ticketType) {
-        newErrors.ticketType = 'Vælg en billettype';
-        isValid = false;
-      }
-    } else if (stage === 2) {
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+    const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
+
+    if (stage === 2) {
       if (totalTickets === 0) {
         newErrors.ticketQuantity = 'Vælg mindst én billet';
         isValid = false;
@@ -48,6 +47,14 @@ function FooForm() {
     } else if (stage === 3) {
       if (!formData.camp) {
         newErrors.camp = 'Vælg en camp';
+        isValid = false;
+      }
+      if (totalTentCapacity < totalTickets) {
+        newErrors.tents = 'Vælg nok teltpladser til alle personer';
+        isValid = false;
+      }
+      if (totalTentCapacity > totalTickets + 2) {
+        newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+2 er tilladt)';
         isValid = false;
       }
     } else if (stage === 4) {
@@ -82,9 +89,8 @@ function FooForm() {
 
   const prevStage = () => setStage(stage - 1);
 
-  const totalTickets = formData.quantities.viking + formData.quantities.bonde;
-
   const incrementTicket = (type) => {
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
     if (totalTickets < 10) {
       setFormData((prevData) => ({
         ...prevData,
@@ -118,6 +124,9 @@ function FooForm() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+    let newErrors = { ...errors };
+
     if (type === 'checkbox') {
       setFormData((prevData) => ({
         ...prevData,
@@ -127,12 +136,24 @@ function FooForm() {
         },
       }));
     } else if (name === 'twoMan' || name === 'threeMan') {
+      const newTents = {
+        ...formData.tents,
+        [name]: Math.max(0, parseInt(value) || 0),
+      };
+      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
+
+      if (totalTentCapacity < totalTickets) {
+        newErrors.tents = 'Vælg nok teltpladser til alle personer';
+      } else if (totalTentCapacity > totalTickets + 2) {
+        newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+1 er tilladt)';
+      } else {
+        delete newErrors.tents;
+      }
+
+      setErrors(newErrors);
       setFormData((prevData) => ({
         ...prevData,
-        tents: {
-          ...prevData.tents,
-          [name]: parseInt(value),
-        },
+        tents: newTents,
       }));
     } else {
       setFormData((prevData) => ({
@@ -174,61 +195,93 @@ function FooForm() {
     return ticketPrice + tentPrice + extrasPrice;
   };
 
+  const handlePayment = (paymentDetails) => {
+    console.log('Payment details:', paymentDetails);
+    nextStage();
+  };
+
+  const getAllEmails = () => {
+    return formData.personalInfo.map(info => info.email);
+  };
+
+  const variants = {
+    initial: { opacity: 0, x: -100 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
+  };
+
   return (
-    <div className="p-4 flex flex-col items-center">
-      {stage === 1 && (
-        <TicketSelection
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          toggleExpand={toggleExpand}
-          expandedTickets={expandedTickets}
-          errors={errors}
-        />
-      )}
-      {stage === 2 && (
-        <TicketQuantity
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          errors={errors}
-          incrementTicket={incrementTicket}
-          decrementTicket={decrementTicket}
-        />
-      )}
-      {stage === 3 && (
-        <CampAndTentSelection
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          handleCampSelection={handleCampSelection}
-          handleInputChange={handleInputChange}
-          errors={errors}
-        />
-      )}
-      {stage === 4 && (
-        <TicketInformation
-          formData={formData}
-          setFormData={setFormData}
-          nextStage={nextStage}
-          prevStage={prevStage}
-          handlePersonalInfoChange={handlePersonalInfoChange}
-          errors={errors}
-        />
-      )}
-      {stage === 5 && (
-        <Confirmation
-          prevStage={prevStage}
-          nextStage={nextStage}
-        />
-      )}
-      {stage === 6 && (
-        <ThankYou
-          handleClick={handleClick}
-        />
-      )}
+    <div className={`p-4 flex flex-col ${stage === 1 || stage === 6 ? 'items-center' : ''}`}>
+      <motion.div
+        key={stage}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={variants}
+        transition={{ duration: 0.5 }}
+      >
+        {stage === 1 && (
+          <TicketSelection
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            toggleExpand={toggleExpand}
+            expandedTickets={expandedTickets}
+            errors={errors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 2 && (
+          <TicketQuantity
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            errors={errors}
+            incrementTicket={incrementTicket}
+            decrementTicket={decrementTicket}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 3 && (
+          <CampAndTentSelection
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            handleCampSelection={handleCampSelection}
+            handleInputChange={handleInputChange}
+            errors={errors}
+            setErrors={setErrors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 4 && (
+          <TicketInformation
+            formData={formData}
+            setFormData={setFormData}
+            nextStage={nextStage}
+            prevStage={prevStage}
+            handlePersonalInfoChange={handlePersonalInfoChange}
+            errors={errors}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 5 && (
+          <Confirmation
+            formData={formData}
+            prevStage={prevStage}
+            handlePayment={handlePayment}
+            calculateTotalPrice={calculateTotalPrice}
+          />
+        )}
+        {stage === 6 && (
+          <ThankYou
+            emails={getAllEmails()}
+            handleClick={handleClick}
+          />
+        )}
+      </motion.div>
     </div>
   );
 }

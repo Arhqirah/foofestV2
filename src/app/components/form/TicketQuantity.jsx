@@ -1,16 +1,20 @@
 import React from 'react';
+import ShoppingCart from '@/app/components/form/ShoppingCart';
 
-const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, incrementTicket, decrementTicket }) => {
+const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, incrementTicket, decrementTicket, errors, calculateTotalPrice }) => {
   return (
-    <div className="flex flex-row w-full max-w-4xl mx-auto mt-4">
-      <div className="w-2/3 p-4">
-        <button onClick={prevStage} className="mb-4">Tilbage</button>
-        <h2 className="text-lg font-bold">Vælg antal billetter</h2>
+    <div className="flex flex-wrap flex-col md:flex-row w-full max-w-4xl mx-auto p-4">
+      <div className="w-full md:w-3/5 p-4">
+        <h2 className="text-lg font-bold mb-4">Vælg antal billetter</h2>
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <label className="font-semibold">VIKING Billetter</label>
-            <div className="flex items-center">
-              <button onClick={() => decrementTicket('viking')} className="px-2">-</button>
+        <div className="flex items-center justify-between">
+  <label className="font-semibold flex items-center">
+    <img src="/assets/icons/Viking150.webp" alt="Viking Icon" className="w-auto h-12 mx-2" />
+    Viking Billetter (1299 DKK):
+  </label>
+
+            <div className="flex items-center gap-2">
+              <button onClick={() => decrementTicket('viking')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
               <input
                 type="number"
                 name="viking"
@@ -18,13 +22,13 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, i
                 readOnly
                 className="border px-2 py-1 text-center w-16"
               />
-              <button onClick={() => incrementTicket('viking')} className="px-2">+</button>
+              <button onClick={() => incrementTicket('viking')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <label className="font-semibold">BONDE Billetter</label>
-            <div className="flex items-center">
-              <button onClick={() => decrementTicket('bonde')} className="px-2">-</button>
+            <label className="font-semibold flex items-center"><img src="/assets/icons/Bonde150.webp" alt="Viking Icon" className="w-auto h-12 mx-2" />Bonde Billetter (799 DKK):</label>
+            <div className="flex items-center gap-2">
+              <button onClick={() => decrementTicket('bonde')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
               <input
                 type="number"
                 name="bonde"
@@ -32,32 +36,13 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, errors, i
                 readOnly
                 className="border px-2 py-1 text-center w-16"
               />
-              <button onClick={() => incrementTicket('bonde')} className="px-2">+</button>
+              <button onClick={() => incrementTicket('bonde')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
             </div>
           </div>
-        </div>
-        {errors.ticketQuantity && <p className="text-red-500">{errors.ticketQuantity}</p>}
-        <button onClick={nextStage} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Videre
-        </button>
-      </div>
-      <div className="w-1/3 p-4 border-l sticky top-0">
-        <h2 className="text-lg font-bold">Din kurv</h2>
-        <ul className="list-disc list-inside">
-          {formData.quantities.viking > 0 && (
-            <li>{formData.quantities.viking} x VIKING Billetter</li>
-          )}
-          {formData.quantities.bonde > 0 && (
-            <li>{formData.quantities.bonde} x BONDE Billetter</li>
-          )}
-        </ul>
-        <div className="mt-4">
-          <h3 className="font-semibold">Total Pris:</h3>
-          <p>
-            {(formData.quantities.viking * 1299) + (formData.quantities.bonde * 799)} DKK
-          </p>
+          {errors.ticketQuantity && <p className="text-red mt-2">{errors.ticketQuantity}</p>}
         </div>
       </div>
+      <ShoppingCart formData={formData} prevStage={prevStage} nextStage={nextStage} calculateTotalPrice={calculateTotalPrice} />
     </div>
   );
 };

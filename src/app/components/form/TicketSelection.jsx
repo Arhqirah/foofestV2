@@ -4,8 +4,8 @@ import Ticket from '@/app/components/form/Ticket';
 const TicketSelection = ({ formData, setFormData, nextStage, toggleExpand, expandedTickets, errors }) => {
   return (
     <div>
-      <h2 className="text-lg font-bold">Vælg billettype</h2>
-      <div className="flex flex-row justify-evenly gap-4">
+      <h2 className="text-lg mb-4 sm:text-center text-center ">Vælg billettype</h2>
+      <div className="sm:flex sm:flex-row sm:justify-items-center flex flex-col justify-evenly gap-4">
         <Ticket
           type="Bonde"
           name="BONDE"
@@ -35,7 +35,7 @@ const TicketSelection = ({ formData, setFormData, nextStage, toggleExpand, expan
           borderColor="border-gold"
         />
       </div>
-      {errors.ticketType && <p className="text-red-500">{errors.ticketType}</p>}
+      {errors.ticketType && <p className="text-orange">{errors.ticketType}</p>}
     </div>
   );
 };

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
 const PaymentForm = () => {
   const [state, setState] = useState({
@@ -10,38 +11,101 @@ const PaymentForm = () => {
     focus: '',
   });
 
+  const numberRef = useRef(null);
+  const expiryRef = useRef(null);
+  const cvcRef = useRef(null);
+  const nameRef = useRef(null);
+
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
-    
-    setState((prev) => ({ ...prev, [name]: value }));
-  }
+
+    // Validation for different fields
+    if (name === 'number' && !/^\d*$/.test(value)) return;
+    if (name === 'expiry' && !/^\d*$/.test(value)) return;
+    if (name === 'cvc' && !/^\d*$/.test(value)) return;
+    if (name === 'name' && !/^[a-zA-Z\s]*$/.test(value)) return;
+
+    setState((prev) => {
+      const newState = { ...prev, [name]: value };
+
+      if (name === 'number' && value.length === 16) {
+        expiryRef.current.focus();
+      } else if (name === 'expiry' && value.length === 4) {
+        cvcRef.current.focus();
+      } else if (name === 'cvc' && value.length === 3) {
+        nameRef.current.focus();
+      }
+
+      return newState;
+    });
+  };
 
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
-  }
+  };
 
   return (
-    <div>
-      <Cards
-        number={state.number}
-        expiry={state.expiry}
-        cvc={state.cvc}
-        name={state.name}
-        focused={state.focus}
-      />
-      <form>
+    <div className="flex flex-wrap max-w-lg mx-auto p-4">
+      <div className="mb-4">
+        <Cards
+          number={state.number}
+          expiry={state.expiry}
+          cvc={state.cvc}
+          name={state.name}
+          focused={state.focus}
+        />
+      </div>
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
-          type="number"
+          type="text"
           name="number"
           placeholder="Card Number"
           value={state.number}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          ref={numberRef}
+          className="border px-4 py-2 rounded"
+          maxLength="16"
+          inputMode="numeric"
         />
-        ...
+        <input
+          type="text"
+          name="expiry"
+          placeholder="Card Expiry (MMYY)"
+          value={state.expiry}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          ref={expiryRef}
+          className="border px-4 py-2 rounded"
+          maxLength="4"
+          inputMode="numeric"
+        />
+        <input
+          type="text"
+          name="cvc"
+          placeholder="Card CVC"
+          value={state.cvc}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          ref={cvcRef}
+          className="border px-4 py-2 rounded"
+          maxLength="3"
+          inputMode="numeric"
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder="Card Name"
+          value={state.name}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          ref={nameRef}
+          className="border px-4 py-2 rounded"
+          inputMode="text"
+        />
       </form>
     </div>
   );
-}
+};
 
 export default PaymentForm;

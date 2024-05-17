@@ -1,121 +1,198 @@
 import React from 'react';
+import CampButton from '@/app/components/form/CampButton';
+import ShoppingCart from '@/app/components/form/ShoppingCart';
 
-const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, handleCampSelection, handleInputChange, errors }) => {
+const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, handleCampSelection, handleInputChange, errors, setErrors, calculateTotalPrice }) => {
+  const totalTickets = formData.quantities.viking + formData.quantities.bonde;
+  const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
+
+  const validateSelection = () => {
+    let newErrors = {};
+
+    if (!formData.camp) {
+      newErrors.camp = 'Vælg en camp';
+    }
+
+    if (totalTentCapacity < totalTickets) {
+      newErrors.tents = 'Vælg nok teltpladser til alle personer';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNextStage = () => {
+    if (validateSelection()) {
+      nextStage();
+    }
+  };
+
+  const incrementTent = (type) => {
+    setFormData((prevData) => {
+      if (prevData.tents[type] < 10) {
+        return {
+          ...prevData,
+          tents: {
+            ...prevData.tents,
+            [type]: prevData.tents[type] + 1,
+          },
+        };
+      }
+      return prevData;
+    });
+  };
+
+  const decrementTent = (type) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tents: {
+        ...prevData.tents,
+        [type]: Math.max(0, prevData.tents[type] - 1),
+      },
+    }));
+  };
+
+  const handleInputChangeWithLimit = (e) => {
+    const { name, value, type, checked } = e.target;
+    let newErrors = { ...errors };
+
+    if (type === 'checkbox') {
+      setFormData((prevData) => ({
+        ...prevData,
+        extras: {
+          ...prevData.extras,
+          [name]: checked,
+        },
+      }));
+    } else if (name === 'twoMan' || name === 'threeMan') {
+      let newValue = parseInt(value) || 0;
+      if (newValue > 10) {
+        newValue = 10;
+      }
+
+      const newTents = {
+        ...formData.tents,
+        [name]: newValue,
+      };
+      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
+
+     
+
+      setErrors(newErrors);
+      setFormData((prevData) => ({
+        ...prevData,
+        tents: newTents,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
   return (
-    <div className="flex flex-row w-full max-w-4xl mx-auto mt-4">
-      <div className="w-2/3 p-4">
-        <button onClick={prevStage} className="mb-4">Tilbage</button>
-        <h2 className="text-lg font-bold">Vælg Camp og Telt</h2>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col mb-4">
-            <label className="font-semibold mb-2">Camp</label>
-            <div className="flex gap-4">
-              <button
-                className={`px-4 py-2 rounded ${formData.camp === 'Camp A' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => handleCampSelection('Camp A')}
-              >
-                Camp A
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${formData.camp === 'Camp B' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => handleCampSelection('Camp B')}
-              >
-                Camp B
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${formData.camp === 'Camp C' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => handleCampSelection('Camp C')}
-              >
-                Camp C
-              </button>
+    <div className="flex flex-wrap flex-col md:flex-row w-full max-w-4xl mx-auto mt-4">
+      <div className="w-full md:w-3/5 p-4">
+        <form>
+          <h2 className="text-lg font-bold pb-4">Vælg en Camp</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col mb-4">
+              <label className="sr-only">Camp</label>
+              <div className="flex flex-wrap gap-4">
+                <CampButton
+                  selected={formData.camp === 'MIDGAARD'}
+                  onClick={() => handleCampSelection('MIDGAARD')}
+                  borderColor={formData.camp === 'MIDGAARD' ? 'border-green' : 'border-green-dark'}
+                  icon="/assets/icons/Midgaard40.webp"
+                  name="MIDGAARD"
+                />
+                <CampButton
+                  selected={formData.camp === 'Vanaheim'}
+                  onClick={() => handleCampSelection('Vanaheim')}
+                  borderColor={formData.camp === 'Vanaheim' ? 'border-yellow' : 'border-yellow-dark'}
+                  icon="/assets/icons/Vanaheim40.webp"
+                  name="VANAHEIM"
+                />
+                <CampButton
+                  selected={formData.camp === 'Alfheim'}
+                  onClick={() => handleCampSelection('Alfheim')}
+                  borderColor={formData.camp === 'Alfheim' ? 'border-blue' : 'border-blue-dark'}
+                  icon="/assets/icons/Alfheim40.webp"
+                  name="ALFHEIM"
+                />
+              </div>
+              {errors.camp && <p className="text-red mt-2">{errors.camp}</p>}
+            </div>
+
+            <div className="flex flex-col mb-4">
+              <h2 className="flex items-baseline text-lg font-bold">
+                Vælg dit Telt 
+                <img src="/assets/icons/Tent55.webp" alt="Tent Icon" className="inline-block ml-2 align-baseline" />
+              </h2>
+              <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center">
+                  <label htmlFor="twoMan" className="mr-2">2-mands (299 DKK):</label>
+                  <button type="button" onClick={() => decrementTent('twoMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
+                  <input
+                    id="twoMan"
+                    type="number"
+                    name="twoMan"
+                    value={formData.tents.twoMan}
+                    readOnly
+                    className="border px-2 py-1 text-center w-16"
+                  />
+                  <button type="button" onClick={() => incrementTent('twoMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
+                </div>
+                <div className="flex items-center">
+                  <label htmlFor="threeMan" className="mr-2">3-mands (399 DKK):</label>
+                  <button type="button" onClick={() => decrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
+                  <input
+                    id="threeMan"
+                    type="number"
+                    name="threeMan"
+                    value={formData.tents.threeMan}
+                    readOnly
+                    className="border px-2 py-1 text-center w-16"
+                  />
+                  <button type="button" onClick={() => incrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
+                </div>
+              </div>
+              {errors.tents && <p className="text-red mt-2">{errors.tents}</p>}
+            </div>
+
+            <div className="flex flex-col mb-4">
+              <label className="font-semibold mb-2">Ekstra</label>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="item1"
+                    name="item1"
+                    checked={formData.extras.item1}
+                    onChange={handleInputChangeWithLimit}
+                    className="mr-2"
+                  />
+                  <label htmlFor="item1">Grøn Camping (249 DKK)</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="item2"
+                    name="item2"
+                    checked={formData.extras.item2}
+                    onChange={handleInputChangeWithLimit}
+                    className="mr-2"
+                  />
+                  <label htmlFor="item2">Vikinge Hat (39 DKK)</label>
+                </div>
+              </div>
             </div>
           </div>
-          {errors.camp && <p className="text-red-500">{errors.camp}</p>}
-          <div className="flex flex-col mb-4">
-            <label className="font-semibold mb-2">Telt (2-mands og 3-mands)</label>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center">
-                <label className="mr-2">2-mands (299 DKK):</label>
-                <input
-                  type="number"
-                  name="twoMan"
-                  value={formData.tents.twoMan}
-                  onChange={handleInputChange}
-                  className="border px-2 py-1 w-16 text-center"
-                />
-              </div>
-              <div className="flex items-center">
-                <label className="mr-2">3-mands (399 DKK):</label>
-                <input
-                  type="number"
-                  name="threeMan"
-                  value={formData.tents.threeMan}
-                  onChange={handleInputChange}
-                  className="border px-2 py-1 w-16 text-center"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col mb-4">
-            <label className="font-semibold mb-2">Ekstra</label>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="item1"
-                  checked={formData.extras.item1}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                <label>Ekstra item 1 (249 DKK)</label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="item2"
-                  checked={formData.extras.item2}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                <label>Ekstra item 2 (39 DKK)</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button onClick={nextStage} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Videre
-        </button>
+        </form>
       </div>
-      <div className="w-1/3 p-4 border-l sticky top-0">
-        <h2 className="text-lg font-bold">Din kurv</h2>
-        <ul className="list-disc list-inside">
-          {formData.quantities.viking > 0 && (
-            <li>{formData.quantities.viking} x VIKING Billetter</li>
-          )}
-          {formData.quantities.bonde > 0 && (
-            <li>{formData.quantities.bonde} x BONDE Billetter</li>
-          )}
-          {formData.camp && (
-            <li>Camp: {formData.camp}</li>
-          )}
-          {formData.tents.twoMan > 0 && (
-            <li>{formData.tents.twoMan} x 2-mands telt (299 DKK)</li>
-          )}
-          {formData.tents.threeMan > 0 && (
-            <li>{formData.tents.threeMan} x 3-mands telt (399 DKK)</li>
-          )}
-          {formData.extras.item1 && (
-            <li>Ekstra item 1 (249 DKK)</li>
-          )}
-          {formData.extras.item2 && (
-            <li>Ekstra item 2 (39 DKK)</li>
-          )}
-        </ul>
-        <div className="mt-4">
-          <h3 className="font-semibold">Total Pris:</h3>
-          <p>{(formData.quantities.viking * 1299) + (formData.quantities.bonde * 799) + (formData.tents.twoMan * 299) + (formData.tents.threeMan * 399) + (formData.extras.item1 ? 249 : 0) + (formData.extras.item2 ? 39 : 0)} DKK</p>
-        </div>
-      </div>
+      <ShoppingCart formData={formData} prevStage={prevStage} nextStage={handleNextStage} calculateTotalPrice={calculateTotalPrice} />
     </div>
   );
 };

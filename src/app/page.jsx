@@ -3,6 +3,9 @@ import Link from "next/link";
 import Section from "./components/Section";
 import Divider from "./components/Divider";
 import Image from "next/image";
+import "react-credit-cards-2";
+import { Fragment } from "react";
+import ClickableCircle from "./components/ClickableCircle";
 
 export default async function LandingPage() {
   const data = await getAllBands();
@@ -17,7 +20,8 @@ return (
   <div className="flex flex-col">
   <Section  title={null} customStyle="items-center justify-center">
     <Image src={"/assets/img/FooFestLogo.webp"} alt={"logo"} width={900} height={600}></Image>
-  <p>Til Valhalla og tilbage, festivalen der varer evigt</p>
+    <p>Til Valhalla og tilbage, festivalen der varer evigt</p>
+    <Link className="bg-black-light border-orange border-2 hover:bg-black rounded-full w-fit py-2 px-4 text-xl m-2 mt-6 pt-4 pb-4" href="./form" prefetch={false}>KØB BILLETTER</Link>
   </Section>
   <Divider></Divider>
       <Section title="PROGRAM" customStyle="place-items-center">
@@ -36,19 +40,19 @@ return (
         </div>
       </Section>
       <Section title="FIND DIN CAMP" customStyle="place-items-center">
+      <ClickableCircle></ClickableCircle>
       <ul className="flex flex-row place-self-center flex-wrap gap-12">
-      {spots.map((stage,index) => {
-        return (
-        <li className={`flex flex-col place-items-center gap-2`} key={stage.area}>
-          <Image src={`/assets/icons/${s[index]}195.webp`} height={195} width={195} alt={stage.area}></Image>
-          <h3 className={`${c[index]}`}>{stage.area}</h3>
-          <p>{stage.available} pladser</p>
-          <Link className="bg-orange w-fit py-2 px-4 rounded" href={`/camp`} prefetch={false}>Til {stage.area}</Link>
-        </li>
+        {spots.map((stage,index) => {
+          return (
+            <li className={`flex flex-col place-items-center gap-2`} key={stage.area}>
+             <Image src={`/assets/icons/${s[index]}195.webp`} height={195} width={195} alt={stage.area}></Image>
+            <h3 className={`${c[index]}`}>{stage.area}</h3>
+            <p>{stage.available} pladser</p>
+            <Link className="bg-orange w-fit py-2 px-4 rounded" href={`/camp`} prefetch={false}>Til {stage.area}</Link>
+           </li>
         )
-      })}
-    </ul>
-        {/* HER SKAL VI LAVE VORES FLOTTE TING! */}
+         })}
+      </ul>
       </Section>
       </div>
   );

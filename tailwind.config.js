@@ -90,6 +90,13 @@ module.exports = {
         DEFAULT: "#9B9B9B",
         dark: "#7e7e7e",
       },
+      "red": {
+        DEFAULT:"#b22222",
+      },
+      "black":{
+        light: "#1B1B1B",
+        DEFAULT: "#000000",
+      }
     },
     extend: {
       // sm0l and bigger 

@@ -1,21 +1,68 @@
 import {getAllAvailableSpots, getAllSchedule} from "../lib/apiCall"
 import Section from "../components/Section";
-import FancyNav from "../components/FancyNav";
+import Link from "next/link"
+import ArtistCard from '@/app/components/ArtistCard';
 
-async function Camp() {
-// const spots = await getAllAvailableSpots();
-// const stages = await getAllSchedule();
-// console.log(stages)
-const s = ['Midgaard', 'Vanaheim', 'Jotunheim']
+const artists = [
+  {
+    image: '/assets/img/DummyArtist.webp',
+    name: 'DummyArtist',
+    genre: 'Indie Rock',
+    performanceDate: 'June 12, 2024, 8:00 PM',
+    description: 'Award-winning indie rock sensation known for electrifying performances.'
+  
 
+  },
+  {
+    image: '/assets/img/DummyArtist.webp',
+    name: 'DummyArtist',
+    genre: 'Indie Rock',
+    performanceDate: 'June 12, 2024, 8:00 PM',
+    description: 'Award-winning indie rock sensation known for electrifying performances.'
+  
+
+  },
+  {
+    image: '/assets/img/DummyArtist.webp',
+    name: 'DummyArtist',
+    genre: 'Indie Rock',
+    performanceDate: 'June 12, 2024, 8:00 PM',
+    description: 'Award-winning indie rock sensation known for electrifying performances.'
+  
+
+  },
+  {
+    image: '/assets/img/DummyArtist.webp',
+    name: 'DummyArtist',
+    genre: 'Indie Rock',
+    performanceDate: 'June 12, 2024, 8:00 PM',
+    description: 'Award-winning indie rock sensation known for electrifying performances.'
+  
+
+  },
+];
+async function Camp(params) {
+  const {slug} = params
+  const camp = await getSchedule();
   return (
     <>
     <FancyNav></FancyNav>
     <Section title={null}>
     <h2>Camp page</h2>
-    </Section>
-    <Section title="Tilgænglige">
-      <Camp></Camp>
+    <Link prefetch={false} href={`./#`}>Check a band</Link>
+    <div className="flex flex-wrap justify-center items-center min-h-screen bg-gray-100 gap-4">
+      {artists.map((artist, index) => (
+        <ArtistCard
+          key={index}
+          image={artist.image}
+          name={artist.name}
+          genre={artist.genre}
+          performanceDate={artist.performanceDate}
+          description={artist.description}
+          
+        />
+      ))}
+    </div>
     </Section>
     </>
   )
