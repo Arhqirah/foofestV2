@@ -7,12 +7,12 @@ const ClickableCircle = () => {
       <div className="relative mx-auto w-48 h-48">
         
        
-        <Link href="/form" prefetch={false}>
-          <div className="absolute w-[32rem] h-52 hover:backdrop-blur-sm hover:bg-opacity-30 duration-300 clip-wedge rotate-0 origin-center transform hover:opacity-100"style={{ top: '0%', left: '-80%' }}></div>
+        <Link href="/camp" prefetch={false}>
+          <div className="absolute w-[32rem] h-52 hover:backdrop-blur-sm hover:bg-opacity-30 duration-300 clip-wedge rotate-0 origin-center transform hover:opacity-100"style={{ top: '0%', left: '-83%' }}></div>
         </Link>
 
        
-        <Link href="/#" prefetch={false}>
+        <Link href="/camp" prefetch={false}>
           <div className="absolute w-72 h-48 hover:backdrop-blur-sm duration-300 clip-wedge rotate-[270deg] origin-center transform hover:opacity-100"style={{ top: '50%', left: '-82%' }}></div>
         </Link>
 

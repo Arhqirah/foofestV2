@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CampButton from '@/app/components/form/CampButton';
 import ShoppingCart from '@/app/components/form/ShoppingCart';
+import axios from 'axios';
+import supabase from '@/app/lib/supabaseClient';
 
 const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, handleCampSelection, handleInputChange, errors, setErrors, calculateTotalPrice }) => {
+  const [reservationMessage, setReservationMessage] = useState('');
+  const [availableSpots, setAvailableSpots] = useState({});
+  const [reservationSuccess, setReservationSuccess] = useState(false);
+  const [reservationError, setReservationError] = useState('');
+
+  useEffect(() => {
+    fetchAvailableSpots();
+  }, []);
+
+  const fetchAvailableSpots = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/available-spots');
+      const spots = response.data.reduce((acc, area) => {
+        acc[area.area] = area.available;
+        return acc;
+      }, {});
+      setAvailableSpots(spots);
+    } catch (error) {
+      console.error('Error fetching available spots:', error);
+    }
+  };
+
   const totalTickets = formData.quantities.viking + formData.quantities.bonde;
   const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
 
@@ -21,9 +45,55 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleNextStage = () => {
-    if (validateSelection()) {
-      nextStage();
+  const handleNextStage = async () => {
+    if (!validateSelection()) {
+      return;
+    }
+
+    try {
+      console.log('Attempting to reserve spot with backend');
+      const response = await axios.put('http://localhost:8080/reserve-spot', {
+        area: formData.camp,
+        amount: totalTickets,
+      });
+
+      console.log('Response from backend:', response.data);
+
+      if (response.data.message) {
+        setReservationMessage(response.data.message);
+        setReservationSuccess(true);
+        setReservationError('');
+
+        const expirationTime = new Date();
+        expirationTime.setMinutes(expirationTime.getMinutes() + 5);
+
+        const formattedExpirationTime = expirationTime.toISOString();
+
+        const { data, error } = await supabase
+          .from('reservations')
+          .insert([
+            {
+              area: formData.camp,
+              amount: totalTickets,
+              expires_at: formattedExpirationTime,
+            },
+          ]);
+
+        if (error) {
+          console.error('Error saving reservation to Supabase:', error);
+          setReservationMessage('Error saving reservation to database');
+        } else {
+          console.log('Reservation saved to Supabase:', data);
+          nextStage();
+        }
+      } else {
+        console.error('Reservation error:', response.data);
+        setReservationMessage(response.data.error || 'An error occurred while reserving a spot.');
+      }
+      await fetchAvailableSpots();
+    } catch (error) {
+      console.error('An error occurred while reserving a spot:', error);
+      setReservationMessage('An error occurred while reserving a spot.');
     }
   };
 
@@ -74,9 +144,6 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
         ...formData.tents,
         [name]: newValue,
       };
-      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
-
-     
 
       setErrors(newErrors);
       setFormData((prevData) => ({
@@ -101,11 +168,12 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
               <label className="sr-only">Camp</label>
               <div className="flex flex-wrap gap-4">
                 <CampButton
-                  selected={formData.camp === 'MIDGAARD'}
-                  onClick={() => handleCampSelection('MIDGAARD')}
-                  borderColor={formData.camp === 'MIDGAARD' ? 'border-green' : 'border-green-dark'}
+                  selected={formData.camp === 'Midgard'}
+                  onClick={() => handleCampSelection('Midgard')}
+                  borderColor={formData.camp === 'Midgard' ? 'border-green' : 'border-green-dark'}
                   icon="/assets/icons/Midgaard40.webp"
-                  name="MIDGAARD"
+                  name="MIDGARD"
+                  availableSpots={availableSpots['Midgard']}
                 />
                 <CampButton
                   selected={formData.camp === 'Vanaheim'}
@@ -113,6 +181,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                   borderColor={formData.camp === 'Vanaheim' ? 'border-yellow' : 'border-yellow-dark'}
                   icon="/assets/icons/Vanaheim40.webp"
                   name="VANAHEIM"
+                  availableSpots={availableSpots['Vanaheim']}
                 />
                 <CampButton
                   selected={formData.camp === 'Alfheim'}
@@ -120,9 +189,16 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                   borderColor={formData.camp === 'Alfheim' ? 'border-blue' : 'border-blue-dark'}
                   icon="/assets/icons/Alfheim40.webp"
                   name="ALFHEIM"
+                  availableSpots={availableSpots['Alfheim']}
                 />
               </div>
+              
               {errors.camp && <p className="text-red mt-2">{errors.camp}</p>}
+            </div>
+
+            <div className="flex flex-col mb-4">
+              {reservationMessage && <p className="text-green-light mt-2">{reservationMessage}</p>}
+              {errors.reservation && <p className="text-red mt-2">{errors.reservation}</p>}
             </div>
 
             <div className="flex flex-col mb-4">
@@ -159,7 +235,6 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                   <button type="button" onClick={() => incrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
                 </div>
               </div>
-              {errors.tents && <p className="text-red mt-2">{errors.tents}</p>}
             </div>
 
             <div className="flex flex-col mb-4">
@@ -193,6 +268,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
         </form>
       </div>
       <ShoppingCart formData={formData} prevStage={prevStage} nextStage={handleNextStage} calculateTotalPrice={calculateTotalPrice} />
+      {errors.tents && <p className="text-red mt-2">{errors.tents}</p>}
     </div>
   );
 };
