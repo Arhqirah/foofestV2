@@ -1,72 +1,19 @@
-import {getAllAvailableSpots, getAllSchedule} from "../lib/apiCall"
+import CampBase from "../components/camp/CampBase";
+import CampStages from "../components/camp/CampStages"
 import Section from "../components/Section";
-import Link from "next/link"
-import ArtistCard from '@/app/components/ArtistCard';
-import ClickableCircle from "../components/ClickableCircle";
+import { getFlatSchedule } from "../lib/apiCall";
+import { mergeData } from "../util/filter";
 
-const artists = [
-  {
-    image: '/assets/img/DummyArtist.webp',
-    name: 'DummyArtist',
-    genre: 'Indie Rock',
-    performanceDate: 'June 12, 2024, 8:00 PM',
-    description: 'Award-winning indie rock sensation known for electrifying performances.'
-  
+async function Camp() {
+    const flatSchedule = await getFlatSchedule();
+    const mergedData = await mergeData();
 
-  },
-  {
-    image: '/assets/img/DummyArtist.webp',
-    name: 'DummyArtist',
-    genre: 'Indie Rock',
-    performanceDate: 'June 12, 2024, 8:00 PM',
-    description: 'Award-winning indie rock sensation known for electrifying performances.'
-  
-
-  },
-  {
-    image: '/assets/img/DummyArtist.webp',
-    name: 'DummyArtist',
-    genre: 'Indie Rock',
-    performanceDate: 'June 12, 2024, 8:00 PM',
-    description: 'Award-winning indie rock sensation known for electrifying performances.'
-  
-
-  },
-  {
-    image: '/assets/img/DummyArtist.webp',
-    name: 'DummyArtist',
-    genre: 'Indie Rock',
-    performanceDate: 'June 12, 2024, 8:00 PM',
-    description: 'Award-winning indie rock sensation known for electrifying performances.'
-  
-
-  },
-];
-async function Camp(params) {
-  const {slug} = params
-  const camp = await getAllSchedule();
-  return (
-    <>
-    <ClickableCircle></ClickableCircle>
-    <Section title={null}>
-    <h2>Camp page</h2>
-    <Link prefetch={false} href={`./#`}>Check a band</Link>
-    <div className="flex flex-wrap justify-center items-center min-h-screen bg-gray-100 gap-4">
-      {artists.map((artist, index) => (
-        <ArtistCard
-          key={index}
-          image={artist.image}
-          name={artist.name}
-          genre={artist.genre}
-          performanceDate={artist.performanceDate}
-          description={artist.description}
-          
-        />
-      ))}
-    </div>
-    </Section>
-    </>
-  )
+    return (
+        <Section title={null}>
+            {/* <CampBase schedule={flatSchedule} bands={mergedData}></CampBase> */}
+            <CampStages flatSchedule={flatSchedule} mergedData={mergedData} />
+        </Section>
+    );
 }
 
 export default Camp;

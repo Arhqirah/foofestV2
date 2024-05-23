@@ -1,5 +1,6 @@
 export const rootUrl = "http://localhost:8080";
-export const unsplashUrl = "https://source.unsplash.com/random";
+// export const rootUrl = process.env.GLITCH_HOST;
+export const unsplashUrl = process.env.UNSPLASH;
 
 export async function getAllBands() {
   const res = await fetch(`${rootUrl}/bands`);
@@ -15,6 +16,7 @@ export async function getAllSchedule() {
   const res = await fetch(`${rootUrl}/schedule`);
   return await res.json();
 }
+
 export async function getFlatSchedule() {
   const data = await getAllSchedule();
 
