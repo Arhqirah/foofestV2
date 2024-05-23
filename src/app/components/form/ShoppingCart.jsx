@@ -10,7 +10,7 @@ const ShoppingCart = ({ formData, prevStage, nextStage, calculateTotalPrice }) =
   };
 
   return (
-    <div className="w-full md:w-2/5 p-4 border-l md:sticky top-0">
+    <div className="w-full md:w-2/5 p-4 border-l  top-0">
       <h2 className="text-lg font-bold">
         <img
           src="/assets/icons/ShoppingCart30.webp"

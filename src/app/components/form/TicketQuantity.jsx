@@ -14,13 +14,13 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, increment
   </label>
 
             <div className="flex items-center gap-2">
-              <button onClick={() => decrementTicket('viking')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
+              <button onClick={() => decrementTicket('viking')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white text-center">-</button>
               <input
                 type="number"
-                name="viking"
+                name="Viking"
                 value={formData.quantities.viking}
                 readOnly
-                className="border px-2 py-1 text-center w-16"
+                className="border px-2 py-1 pl-2 md:pl-6 text-center w-16 text-black"
               />
               <button onClick={() => incrementTicket('viking')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
             </div>
@@ -31,10 +31,10 @@ const TicketQuantity = ({ formData, setFormData, nextStage, prevStage, increment
               <button onClick={() => decrementTicket('bonde')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">-</button>
               <input
                 type="number"
-                name="bonde"
+                name="Bonde"
                 value={formData.quantities.bonde}
                 readOnly
-                className="border px-2 py-1 text-center w-16"
+                className="border px-2 py-1 pl-2 md:pl-6 text-center w-16 text-black"
               />
               <button onClick={() => incrementTicket('bonde')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
             </div>

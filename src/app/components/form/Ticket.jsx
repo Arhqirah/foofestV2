@@ -57,7 +57,7 @@ const Ticket = ({ type, name, price, benefits, icon, onClick, isExpanded, toggle
             onClick={onClick}
             className="mt-4 bg-orange hover:bg-orange-darker text-white font-bold py-2 px-4 rounded"
           >
-            Select {name}
+            Videre {name}
           </button>
         </div>
       </div>

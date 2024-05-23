@@ -11,7 +11,7 @@ const TicketSelection = ({ formData, setFormData, nextStage, toggleExpand, expan
           name="BONDE"
           price="FRA 799.-"
           icon="/assets/icons/Bonde150.webp"
-          benefits={['Standard seating', 'Access to event']}
+          benefits={['Stå pladser', 'Adgang til eventet']}
           isExpanded={expandedTickets.Bonde}
           onClick={() => {
             setFormData({ ...formData, ticketType: 'Bonde' });
@@ -24,7 +24,7 @@ const TicketSelection = ({ formData, setFormData, nextStage, toggleExpand, expan
           type="Viking"
           name="VIKING"
           price="FRA 1299.-"
-          benefits={['Priority seating', 'Free drinks', 'Meet and greet']}
+          benefits={['VIP Pladser', 'Gratis drikkevare', 'Mød Artisten']}
           icon="/assets/icons/Viking150.webp"
           isExpanded={expandedTickets.Viking}
           onClick={() => {

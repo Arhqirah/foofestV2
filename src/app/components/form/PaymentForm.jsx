@@ -56,53 +56,65 @@ const PaymentForm = () => {
         />
       </div>
       <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
-          type="text"
-          name="number"
-          placeholder="Card Number"
-          value={state.number}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          ref={numberRef}
-          className="border px-4 py-2 rounded"
-          maxLength="16"
-          inputMode="numeric"
-        />
-        <input
-          type="text"
-          name="expiry"
-          placeholder="Card Expiry (MMYY)"
-          value={state.expiry}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          ref={expiryRef}
-          className="border px-4 py-2 rounded"
-          maxLength="4"
-          inputMode="numeric"
-        />
-        <input
-          type="text"
-          name="cvc"
-          placeholder="Card CVC"
-          value={state.cvc}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          ref={cvcRef}
-          className="border px-4 py-2 rounded"
-          maxLength="3"
-          inputMode="numeric"
-        />
-        <input
-          type="text"
-          name="name"
-          placeholder="Card Name"
-          value={state.name}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          ref={nameRef}
-          className="border px-4 py-2 rounded"
-          inputMode="text"
-        />
+        <div>
+          <label htmlFor="number" className="block mb-2">Kort Nummer</label>
+          <input
+            type="text"
+            id="number"
+            name="number"
+            value={state.number}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            ref={numberRef}
+            className="border px-4 py-2 rounded"
+            maxLength="16"
+            inputMode="numeric"
+          />
+        </div>
+        <div>
+          <label htmlFor="expiry" className="block mb-2">Udløbsdato (MMYY)</label>
+          <input
+            type="text"
+            id="expiry"
+            name="expiry"
+            value={state.expiry}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            ref={expiryRef}
+            className="border px-4 py-2 rounded"
+            maxLength="4"
+            inputMode="numeric"
+          />
+        </div>
+        <div>
+          <label htmlFor="cvc" className="block mb-2">Kort CVC</label>
+          <input
+            type="text"
+            id="cvc"
+            name="cvc"
+            value={state.cvc}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            ref={cvcRef}
+            className="border px-4 py-2 rounded"
+            maxLength="3"
+            inputMode="numeric"
+          />
+        </div>
+        <div>
+          <label htmlFor="name" className="block mb-2">Kortholder navn</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={state.name}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            ref={nameRef}
+            className="border px-4 py-2 rounded"
+            inputMode="text"
+          />
+        </div>
       </form>
     </div>
   );

@@ -273,6 +273,7 @@ function FooForm() {
             prevStage={prevStage}
             handlePayment={handlePayment}
             calculateTotalPrice={calculateTotalPrice}
+            errors={errors}
           />
         )}
         {stage === 6 && (

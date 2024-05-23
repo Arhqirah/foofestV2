@@ -217,7 +217,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     name="twoMan"
                     value={formData.tents.twoMan}
                     readOnly
-                    className="border px-2 py-1 text-center w-16"
+                    className="border px-2 py-1 pl-2 md:pl-6 text-center w-16 text-black"
                   />
                   <button type="button" onClick={() => incrementTent('twoMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
                 </div>
@@ -230,7 +230,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
                     name="threeMan"
                     value={formData.tents.threeMan}
                     readOnly
-                    className="border px-2 py-1 text-center w-16"
+                    className="border px-2 py-1 pl-2 md:pl-6 text-center w-16 text-black"
                   />
                   <button type="button" onClick={() => incrementTent('threeMan')} className="px-2 bg-black border-white border-2 m-2 rounded-full text-white">+</button>
                 </div>
