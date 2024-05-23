@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Section from "../components/Section";
-import ClickableCircle from "../components/ClickableCircle";
-import CampSchedule from "../components/CampSchedule";
+import Section from "../Section";
+import ClickableCircle from "../ClickableCircle";
+import CampSchedule from "./CampSchedule";
 
 
 const CampPage = ({ flatSchedule, mergedData }) => {
@@ -15,10 +15,8 @@ const CampPage = ({ flatSchedule, mergedData }) => {
     return (
         <>
         {/* bruge stage i ClickableCircle så vi kan bruge den på flere steder, eksempelvis camp for at skifte stage? */}
-            <ClickableCircle/>
-            <Section title={null}>
-                <CampSchedule flatSchedule={flatSchedule} mergedData={mergedData} stage={stage} setStage={setStage} />
-            </Section>
+            <ClickableCircle stage={stage} setStage={setStage}/>
+            <CampSchedule flatSchedule={flatSchedule} mergedData={mergedData} stage={stage} setStage={setStage}/>
         </>
     );
 };
