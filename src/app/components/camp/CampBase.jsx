@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react'
 import ClickableCircle from '../ClickableCircle';
+import CampSchedule from './CampSchedule';
 import CampStages from '../camp/CampStages'
 import FAQList from '../FaqList';
 // skal modtage dataen og banke ud states m.m der kan sendes videre
@@ -26,7 +27,7 @@ function CampComponent({schedule, bands}) {
       <h2>{stage}</h2>
       <CampStages stage={stage} setStage={setStage}></CampStages>
       <CampSchedule></CampSchedule>
-      <FaqList></FaqList>
+      <FAQList></FAQList>
       </div>
   )
 }

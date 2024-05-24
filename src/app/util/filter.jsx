@@ -32,9 +32,9 @@ export function getDay(choseDay = null) {
 export function filterAct(data) {
     const bands = [];
       data.map((band) => {
-        if (band.act === 'break' || band.act === 'cancelled') {
-          // console.log("no push, it is for ", getDay().short)
-        } else bands.push(band);
+        if (band.act !== 'break' || band.act !== 'cancelled') {
+          bands.push(band);
+        } else console.log("no push, it is for ", getDay().short)
       });
       return bands;
   };

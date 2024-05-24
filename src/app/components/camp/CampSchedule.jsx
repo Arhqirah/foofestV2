@@ -1,17 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { filterAct, mergeData } from "../../util/filter";
+import { metalQuery } from "@/app/util/metalQuery";
 import { rootUrl } from "../../lib/apiCall";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../Button";
 import ArtistCard from "../ArtistCard";
 
-const smallSizes = ["720", "576"];
+const smallSize = "600";
 
 function CampSchedule({ flatSchedule, mergedData, stage, setStage }) {
     const flatScenes = flatSchedule;
     const allData = mergedData;
+    const metal = metalQuery();
 
     const [daySelect, setDaySelect] = useState('mon');
 
@@ -81,9 +83,9 @@ function CampSchedule({ flatSchedule, mergedData, stage, setStage }) {
                             <figure className="relative w-full">
                                 {band.logo.startsWith("http") 
                                     ?  
-                                    (<Image src={`${band.logo}${smallSizes[0]}x${smallSizes[1]}`} height={800} width={800} alt={band.name} priority={false} />)
+                                    (<Image src={`${band.logo}/${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={band.name} priority={false} />)
                                     :
-                                    (<Image src={`${rootUrl}/logos/${band.logo}`} height={800} width={800} alt={band.logoCredits} priority={false} />)
+                                    (<Image src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={band.logoCredits} priority={false} />)
                                 }
                                 <figcaption className="absolute bottom-0 w-full text-orange text-lg">{band.act}</figcaption>
                             </figure>
