@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import TicketSelection from '@/app/components/form/TicketSelection';
@@ -10,12 +10,14 @@ import ThankYou from '@/app/components/form/ThankYou';
 
 function FooForm() {
   const router = useRouter();
+  const TIMER_DURATION = 300; // 5 minutes in seconds
 
   const handleClick = () => {
     router.push('/');
   };
 
   const [stage, setStage] = useState(1);
+  const [timer, setTimer] = useState(TIMER_DURATION);
   const [formData, setFormData] = useState({
     ticketType: '',
     quantities: { viking: 0, bonde: 0 },
@@ -23,6 +25,7 @@ function FooForm() {
     tents: { twoMan: 0, threeMan: 0 },
     extras: { item1: false, item2: false },
     personalInfo: [],
+    paymentDetails: null, // New field for payment details
   });
 
   const [expandedTickets, setExpandedTickets] = useState({
@@ -31,6 +34,31 @@ function FooForm() {
   });
 
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    let interval;
+    if (stage >= 2 && stage <= 5) {
+      interval = setInterval(() => {
+        setTimer(prevTimer => {
+          if (prevTimer <= 1) {
+            clearInterval(interval);
+            setStage(1); // Reset to stage 1 if timer runs out
+            return TIMER_DURATION;
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [stage]);
+
+  useEffect(() => {
+    if (stage === 2) {
+      setTimer(TIMER_DURATION);
+    }
+  }, [stage]);
 
   const validateStage = () => {
     let isValid = true;
@@ -75,6 +103,11 @@ function FooForm() {
           }
         }
       });
+    } else if (stage === 5) {
+      if (!formData.paymentDetails) {
+        newErrors.payment = 'Udfyld betalingsoplysningerne';
+        isValid = false;
+      }
     }
 
     setErrors(newErrors);
@@ -196,7 +229,10 @@ function FooForm() {
   };
 
   const handlePayment = (paymentDetails) => {
-    console.log('Payment details:', paymentDetails);
+    setFormData((prevData) => ({
+      ...prevData,
+      paymentDetails,
+    }));
     nextStage();
   };
 
@@ -232,49 +268,65 @@ function FooForm() {
           />
         )}
         {stage === 2 && (
-          <TicketQuantity
-            formData={formData}
-            setFormData={setFormData}
-            nextStage={nextStage}
-            prevStage={prevStage}
-            errors={errors}
-            incrementTicket={incrementTicket}
-            decrementTicket={decrementTicket}
-            calculateTotalPrice={calculateTotalPrice}
-          />
+          <>
+            
+            <TicketQuantity
+              formData={formData}
+              setFormData={setFormData}
+              nextStage={nextStage}
+              prevStage={prevStage}
+              errors={errors}
+              incrementTicket={incrementTicket}
+              decrementTicket={decrementTicket}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+            <div className="timer float-end">Udløber om: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</div>
+          </>
         )}
         {stage === 3 && (
-          <CampAndTentSelection
-            formData={formData}
-            setFormData={setFormData}
-            nextStage={nextStage}
-            prevStage={prevStage}
-            handleCampSelection={handleCampSelection}
-            handleInputChange={handleInputChange}
-            errors={errors}
-            setErrors={setErrors}
-            calculateTotalPrice={calculateTotalPrice}
-          />
+          <>
+            
+            <CampAndTentSelection
+              formData={formData}
+              setFormData={setFormData}
+              nextStage={nextStage}
+              prevStage={prevStage}
+              handleCampSelection={handleCampSelection}
+              handleInputChange={handleInputChange}
+              errors={errors}
+              setErrors={setErrors}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+            <div className="timer float-end">Udløber om: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</div>
+          </>
         )}
         {stage === 4 && (
-          <TicketInformation
-            formData={formData}
-            setFormData={setFormData}
-            nextStage={nextStage}
-            prevStage={prevStage}
-            handlePersonalInfoChange={handlePersonalInfoChange}
-            errors={errors}
-            calculateTotalPrice={calculateTotalPrice}
-          />
+          <>
+            
+            <TicketInformation
+              formData={formData}
+              setFormData={setFormData}
+              nextStage={nextStage}
+              prevStage={prevStage}
+              handlePersonalInfoChange={handlePersonalInfoChange}
+              errors={errors}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+            <div className="timer float-end">Udløber om: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</div>
+          </>
         )}
         {stage === 5 && (
-          <Confirmation
-            formData={formData}
-            prevStage={prevStage}
-            handlePayment={handlePayment}
-            calculateTotalPrice={calculateTotalPrice}
-            errors={errors}
-          />
+          <>
+            
+            <Confirmation
+              formData={formData}
+              prevStage={prevStage}
+              handlePayment={handlePayment}
+              calculateTotalPrice={calculateTotalPrice}
+              errors={errors}
+            />
+            <div className="timer float-end">Udløber om: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</div>
+          </>
         )}
         {stage === 6 && (
           <ThankYou

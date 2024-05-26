@@ -2,7 +2,7 @@ import React from 'react';
 import ShoppingCart from '@/app/components/form/ShoppingCart';
 import PaymentForm from '@/app/components/form/PaymentForm';
 
-const Confirmation = ({ formData, prevStage, handlePayment, calculateTotalPrice }) => {
+const Confirmation = ({ formData, prevStage, handlePayment, calculateTotalPrice, errors }) => {
   const handlePaymentSubmission = (paymentDetails) => {
     handlePayment(paymentDetails);
   };
@@ -12,6 +12,7 @@ const Confirmation = ({ formData, prevStage, handlePayment, calculateTotalPrice 
       <div className="w-full md:w-3/5 p-4">
         <h2 className="text-lg font-bold mb-4">Bekræftelse</h2>
         <PaymentForm handlePayment={handlePaymentSubmission} />
+        {errors.payment && <p className="text-red">{errors.payment}</p>}
       </div>
       <ShoppingCart
         formData={formData}

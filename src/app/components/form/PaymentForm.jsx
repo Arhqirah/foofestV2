@@ -1,8 +1,9 @@
+import { color } from 'framer-motion';
 import React, { useState, useRef } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
-const PaymentForm = () => {
+const PaymentForm = ({ handlePayment }) => {
   const [state, setState] = useState({
     number: '',
     expiry: '',
@@ -44,6 +45,15 @@ const PaymentForm = () => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (state.number && state.expiry && state.cvc && state.name) {
+      handlePayment(state);
+    } else {
+      alert('Udfyld betalingsoplysningerne');
+    }
+  };
+
   return (
     <div className="flex flex-wrap max-w-lg mx-auto p-4">
       <div className="mb-4">
@@ -55,7 +65,7 @@ const PaymentForm = () => {
           focused={state.focus}
         />
       </div>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="number" className="block mb-2">Kort Nummer</label>
           <input
@@ -66,7 +76,7 @@ const PaymentForm = () => {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             ref={numberRef}
-            className="border px-4 py-2 rounded"
+            className="border text-black px-4 py-2 rounded"
             maxLength="16"
             inputMode="numeric"
           />
@@ -81,7 +91,7 @@ const PaymentForm = () => {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             ref={expiryRef}
-            className="border px-4 py-2 rounded"
+            className="border text-black px-4 py-2 rounded"
             maxLength="4"
             inputMode="numeric"
           />
@@ -96,7 +106,7 @@ const PaymentForm = () => {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             ref={cvcRef}
-            className="border px-4 py-2 rounded"
+            className="border text-black px-4 py-2 rounded"
             maxLength="3"
             inputMode="numeric"
           />
@@ -111,7 +121,7 @@ const PaymentForm = () => {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             ref={nameRef}
-            className="border px-4 py-2 rounded"
+            className="border text-black px-4 py-2 rounded"
             inputMode="text"
           />
         </div>
