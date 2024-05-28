@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CampButton from '@/app/components/form/CampButton';
 import ShoppingCart from '@/app/components/form/ShoppingCart';
-const axios =require('axios');
+import axios from 'axios';
 import supabase from '@/app/lib/supabaseClient';
 
 const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, handleCampSelection, handleInputChange, errors, setErrors, calculateTotalPrice }) => {
