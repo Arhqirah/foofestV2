@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.2",
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "framer-motion": "^11.2.4",
     "next": "14.2.3",
     "react": "^18",
