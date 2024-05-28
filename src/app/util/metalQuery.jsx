@@ -1,0 +1,42 @@
+export const metalQuery = () => {
+    const queries = [
+        'metalmusic',
+        'metalband',
+        'rockconcert',
+        'heavymetal',
+        'metallica',
+        'ironmaiden',
+        'blackmetal',
+        'deathmetal',
+        'thrashmetal',
+        'powermetal',
+        'doommetal',
+        'sludgemetal',
+        'glammetal',
+        'speedmetal',
+        'folkmetal',
+        'progressivemetal',
+        'symphonicmetal',
+        'groovemetal',
+        'numetal',
+        'vikingmetal',
+        'gothicmetal',
+        'metalconcert',
+        'guitarsolo',
+        'rockfestival',
+        'headbanging',
+        'moshpit',
+        'leatherjackets',
+        'bandrehearsal',
+        'metalalbumcover',
+        'stageperformance',
+        'rocknroll',
+        'electricguitar',
+        'drumkit',
+        'liveperformance',
+        'rockfans',
+        'bandmerchandise'
+    ];
+    const randomQuery = queries[Math.floor(Math.random() * queries.length)];
+    return randomQuery;
+}

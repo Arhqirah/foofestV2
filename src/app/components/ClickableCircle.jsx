@@ -8,7 +8,7 @@ const ClickableCircle = () => {
         
        
         <Link href="/camp" prefetch={false}>
-          <div className="absolute w-[32rem] h-52 hover:backdrop-blur-sm hover:bg-opacity-30 duration-300 clip-wedge rotate-0 origin-center transform hover:opacity-100"style={{ top: '0%', left: '-83%' }}>navn</div>
+          <div className="absolute w-[32rem] h-52 hover:backdrop-blur-sm hover:bg-opacity-30 duration-300 clip-wedge rotate-0 origin-center transform hover:opacity-100"style={{ top: '0%', left: '-83%' }}></div>
         </Link>
 
        

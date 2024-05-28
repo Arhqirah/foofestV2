@@ -1,24 +1,21 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Section from "../Section";
-import ClickableCircle from "../ClickableCircle";
-import CampSchedule from "./CampSchedule";
+import React from "react";
+import Button from "../Button";
 
-
-const CampPage = ({ flatSchedule, mergedData }) => {
-    const [stage, setStage] = useState('Midgard');
-
-    useEffect(() => {
-        setStage(Object.keys(mergedData)[0]);
-    }, [mergedData]);
-
+const CampStages = ({stages, handleStage, theme}) => {
     return (
         <>
-        {/* bruge stage i ClickableCircle så vi kan bruge den på flere steder, eksempelvis camp for at skifte stage? */}
-            <ClickableCircle stage={stage} setStage={setStage}/>
-            <CampSchedule flatSchedule={flatSchedule} mergedData={mergedData} stage={stage} setStage={setStage}/>
+            <article className="flex flex-col text-center">
+                <ul className="flex flex-row justify-center flex-wrap gap-4">   
+                    {stages.map((singleStage, i) => (
+                        <li key={i}>
+                            <Button variant={theme[singleStage]} onClick={handleStage}>{singleStage}</Button>
+                        </li>
+                    ))}
+                </ul>
+            </article>
         </>
     );
 };
 
-export default CampPage;
+export default CampStages;

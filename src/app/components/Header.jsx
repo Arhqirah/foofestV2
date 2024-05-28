@@ -1,7 +1,7 @@
 
-function Header() {
+function Header({customStyle = null}) {
   return (
-    <header className="bg-header bg-contain mix-blend-hard-light bg-no-repeat bg-top h-[22vh] -mb-60 -z-10">
+    <header className={`aspect-video w-full h-[max(100px,350px)] bg-header bg-fill bg-no-repeat bg-top mix-blend-hard-light ${customStyle}`}>
     </header>
   );
 }

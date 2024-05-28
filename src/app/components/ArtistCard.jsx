@@ -1,27 +1,42 @@
-// components/ArtistCard.js
-import Image from 'next/image';
-import Link from 'next/link';
+import { rootUrl } from "../lib/apiCall";
+import { metalQuery } from "../util/metalQuery";
+import Image from "next/image";
+import Link from "next/link";
 
-const ArtistCard = ({ image, name, genre, performanceDate, description }) => {
+function ArtistCard({aBand, pos}) {
+    const index = pos;
+    const band = aBand;
+    const metal = metalQuery();
+    const smallSize = 600;
+    const stage = 'Midgard';
+
+    const themeColor = {
+        Midgard: 'green',
+        Vanaheim: 'gold',
+        Alfheim: 'blue',
+    };
+
   return (
-    <div className="max-w-xs mx-auto border-4 border-blue-darkest hover:shadow-orange shadow-lg rounded-lg overflow-hidden">
-      <div className="relative h-48 w-full">
-        <Image
-          src={image}
-          alt={name}
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
-      <div className="p-4">
-        <h2 className="text-xl font-semibold text-gold-light">{name}</h2>
-        <p className="text-white-dark">{genre}</p>
-        <p className="text-grey-dark text-sl">{performanceDate}</p>
-        <p className="text-white-dark mt-2 text-sm">{description}</p>
-        <button className="mt-4 py-2 px-4 bg-orange text-white rounded hover:bg-orange-darker">Læs mere om Artisten</button>
-      </div>
-    </div>
-  );
-};
+    <article className={`grid grid-cols-[minmax(300px,600px)] border-4 border-${themeColor[stage]}-dark hover:shadow-orange shadow-lg rounded-lg`}>
+        <figure className="flex relative object-contain">
+            {band.logo.startsWith("http") 
+                ?  
+                (<Image className="h-auto object-cover" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={`Picture of ${band.name}`} priority={false} style={{height: 'auto'}} />)
+                :
+                (<Image className="h-auto object-cover" src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={`Credits: ${band.logoCredits}`} priority={false} style={{height: 'auto'}}/>)
+            }
+            <figcaption className="absolute bottom-0 w-full h-fit text-center text-orange text-lg ">
+                <Link href={`/bands/${band.slug}`} prefetch={false}>
+                    {band.act}
+                </Link>
+            </figcaption>
+        </figure>
+        <div className="flex flex-col flex-wrap">
+            {band.start ? <p className="flex flex-wrap m-4 p-4 gap-4"><strong>Spiller: </strong>{band.start} - {band.end}</p> : null}
+            <p className="flex flex-wrap m-4 p-4 gap-4"><strong>Genre: </strong>{band.genre ? band.genre : null}</p>
+        </div>
+    </article>
+  )
+}
 
-export default ArtistCard;
+export default ArtistCard
