@@ -1,6 +1,5 @@
 export const rootUrl = "http://localhost:8080";
 // export const rootUrl = process.env.GLITCH_HOST;
-export const unsplashUrl = process.env.UNSPLASH;
 
 export async function getAllBands() {
   const res = await fetch(`${rootUrl}/bands`);
@@ -19,7 +18,6 @@ export async function getAllSchedule() {
 
 export async function getFlatSchedule() {
   const data = await getAllSchedule();
-
   const nextSchedule = [];
   for (let stage in data) {
     for (let day in data[stage]) {

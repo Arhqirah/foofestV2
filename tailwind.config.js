@@ -6,10 +6,13 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+
     backgroundImage: {
-       'header': "url('/assets/img/CLOUDS.webp')",
+       'header': "url('/assets/img/headerCLOUDS.webp')",
        'footer': "url('/assets/img/FooterSmoke.webp')",
        'hero': "url('/assets/img/FooFestLogo.webp')",
+       'bandMap': "url(/assets/img/CAMPMAP.webp)",
+       'divider': "url(/assets/img/divider.webp)"
     },
     fontSize: {
           sm: "var(--font-size--1)",
@@ -104,6 +107,10 @@ module.exports = {
         'xsm': '420px',
         '3xl': '1680px',
         '4xl': '1920px',
+      },
+      borderColor: {
+        'gradient-start': "var(--gradient-start)",
+        'gradient-end': "var(--gradient-end)",
       },
     },
   plugins: [],

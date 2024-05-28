@@ -16,12 +16,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="da">
-      <body className={`${skranji.className}`}>
-        <Header/>
-        <Sidebar style="fixed top-4 right-2" className="z-50"></Sidebar>
-        <main className="flex flex-col self-center justify-center">{children}</main>
-        <Footer className="z-0"/>
+    <html lang="da" className="bg-black">
+      <body className={`mx-auto max-w-[1920px] 4xl:border-green  4xl:border-x-4 ${skranji.className}`}>
+        <Sidebar></Sidebar>
+        <Header customStyle="-mb-[5dvh]"/>
+        <main className="flex flex-col">{children}</main>
+        <Footer customStyle="-mt-4"/>
       </body>
     </html>
   );
