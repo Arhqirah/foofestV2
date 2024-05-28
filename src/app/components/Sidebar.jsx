@@ -10,7 +10,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='sticky top-4 right-2 z-5'>
+    <div className='sticky top-4 right-2 z-50'>
       <button
         className="p-2 bg-black border-orange border-2 text-white rounded-md absolute top-4 right-4 z-100 flex flex-col items-center justify-center"
         onClick={toggleSidebar}
