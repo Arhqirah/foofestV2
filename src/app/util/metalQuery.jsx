@@ -35,7 +35,6 @@ export const metalQuery = () => {
         'drumkit',
         'liveperformance',
         'rockfans',
-        'bandmerchandise'
     ];
     const randomQuery = queries[Math.floor(Math.random() * queries.length)];
     return randomQuery;

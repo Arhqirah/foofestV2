@@ -1,8 +1,7 @@
 import React from 'react'
-import ArtistCardSmall from '../ArtistCardSmall'
 
+// ikke i brug lige pt
 export default function CampPlayingNow({schedule, stage}) {
-  
   function filterByTime(thisStage) {
     const timeNow = new Date().getHours();
 

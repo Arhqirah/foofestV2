@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="da" className="bg-black">
-      <body className={`mx-auto max-w-[1920px] 4xl:border-green  4xl:border-x-4 ${skranji.className}`}>
+      <body className={`mx-auto max-w-[1920px] 4xl:border-green 4xl:border-x-4 ${skranji.className}`}>
         <Sidebar></Sidebar>
         <Header customStyle="-mb-[5dvh]"/>
         <main className="flex flex-col">{children}</main>

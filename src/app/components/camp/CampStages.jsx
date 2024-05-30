@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Button from "../Button";
-
-const CampStages = ({stages, handleStage, theme}) => {
+// ikke i brug lige pt
+export default function CampStages({stages, handleStage, theme}) {
     return (
         <>
             <article className="flex flex-col text-center">
@@ -17,5 +17,3 @@ const CampStages = ({stages, handleStage, theme}) => {
         </>
     );
 };
-
-export default CampStages;

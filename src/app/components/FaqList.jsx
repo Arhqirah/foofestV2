@@ -3,10 +3,11 @@ import FAQItem from '@/app/components/Faq';
 
 const FAQList = () => {
   const faqs = [
-    { question: 'What are the festival dates?', answer: 'Infinity' },
-    { question: 'What is the location of the festival?', answer: 'Valhalla' },
-    { question: 'Are there any age restrictions?', answer: 'All are welcome, children should have a parent nearby' },
-    { question: 'What items are prohibited at the festival?', answer: 'Weapons' },
+    { question: 'Hvor lang tid er festivalen? Nogen datoer?', answer: 'Nej. FooFest spiller altid. 24 timer per dag, alle dager året rundt!' },
+    { question: 'Hvorhen kan jeg finde festivalen?', answer: 'Du finder den i Valhalla, selvfølgelig.' },
+    { question: 'Er der nogen restriktioner?', answer: 'Alle kan komme, individer under 15 år skal have forældre med sig.' },
+    { question: 'Hvad må jeg ikke medbringe til festivalen?', answer: 'Våbn, stoffer og dårligt humør!' },
+    { question: 'Fylder i op med mere ting her?', answer: 'Ja, lige om lidt når der er budget til det!' },
   ];
 
   return (
