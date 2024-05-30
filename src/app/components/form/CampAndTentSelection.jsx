@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { rootUrl } from '@/app/lib/apiCall';
 import CampButton from '@/app/components/form/CampButton';
 import ShoppingCart from '@/app/components/form/ShoppingCart';
 import axios from 'axios';
@@ -16,7 +17,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
   const fetchAvailableSpots = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/available-spots');
+      const response = await axios.get(`${rootUrl}/available-spots`);
       const spots = response.data.reduce((acc, area) => {
         acc[area.area] = area.available;
         return acc;
@@ -52,7 +53,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
     try {
       console.log('Attempting to reserve spot with backend');
-      const response = await axios.put('http://localhost:8080/reserve-spot', {
+      const response = await axios.put(`${rootUrl}/reserve-spot`, {
         area: formData.camp,
         amount: totalTickets,
       });
