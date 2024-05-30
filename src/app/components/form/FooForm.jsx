@@ -10,7 +10,7 @@ import ThankYou from '@/app/components/form/ThankYou';
 
 function FooForm() {
   const router = useRouter();
-  const TIMER_DURATION = 300; // 5 minutes in seconds
+  const TIMER_DURATION = 300;
 
   const handleClick = () => {
     router.push('/');
@@ -25,7 +25,7 @@ function FooForm() {
     tents: { twoMan: 0, threeMan: 0 },
     extras: { item1: false, item2: false },
     personalInfo: [],
-    paymentDetails: null, // New field for payment details
+    paymentDetails: null, 
   });
 
   const [expandedTickets, setExpandedTickets] = useState({
@@ -42,7 +42,7 @@ function FooForm() {
         setTimer(prevTimer => {
           if (prevTimer <= 1) {
             clearInterval(interval);
-            setStage(1); // Reset to stage 1 if timer runs out
+            setStage(1);
             return TIMER_DURATION;
           }
           return prevTimer - 1;
