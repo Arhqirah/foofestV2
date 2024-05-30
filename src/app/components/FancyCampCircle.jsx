@@ -3,10 +3,13 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function FancyCampCircle(props) {
+
   const {href, stageSelect} = props;
+
   const handleStage = (newStage, newTheme) => {
     stageSelect(newStage, newTheme);
   }
+  
   if (href || stageSelect) {
     if (href) {
       return (

@@ -14,8 +14,6 @@ export default function CampBase({bandsData, scheduleData}) {
   const [stage, setStage] = useState('Midgard');
   const [day, setDay] = useState('mon');
   const [theme, setTheme] = useState('green');
-  const [snyd, setSnyd] = useState(false);
-
 
   // handleSingleStage('navn på scene'), med breaks/cancellations - for at få fram en spilliste
   const handleSingleStage = (singleStage) => {

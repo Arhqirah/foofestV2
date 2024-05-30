@@ -1,5 +1,5 @@
-export const rootUrl = "http://localhost:8080";
-// export const rootUrl = "https://doubledebuggers-foofest.glitch.me";
+// export const rootUrl = "http://localhost:8080";
+export const rootUrl = "https://doubledebuggers-foofest.glitch.me";
 
 export async function getAllBands() {
   const res = await fetch(`${rootUrl}/bands`);
