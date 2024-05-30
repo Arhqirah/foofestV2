@@ -15,6 +15,7 @@ const Sidebar = () => {
         className="p-2 bg-black border-orange border-2 text-white rounded-md absolute top-4 right-4 z-100 flex flex-col items-center justify-center"
         onClick={toggleSidebar}
       >
+        <span className='hidden'>button</span>
         <div className="block w-6 h-0.5 bg-white my-1 rounded-full"></div>
         <div className="block w-6 h-0.5 bg-white my-1 rounded-full"></div>
         <div className="block w-6 h-0.5 bg-white my-1 rounded-full"></div>
