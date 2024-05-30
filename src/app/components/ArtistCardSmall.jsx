@@ -23,7 +23,7 @@ function ArtistCardSmall({aBand, pos}) {
             ?  
             (<Image className="h-auto object-cover" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={300} width={300} alt={`Picture of ${band.name}`} priority={false} style={{height: 'cover'}} />)
             :
-            (<Image className="h-auto object-cover" src={`${rootUrl}/logos/${band.logo}`} height={300} width={300} alt={`Credits: ${band.logoCredits}`} priority={false} style={{height: 'cover'}}/>)
+            (<Image className="h-auto object-cover" src={`${rootUrl}/logos/${band.logo}`} height={300} width={300} alt={`${bandSlug.logoCredits ? bandSlug.logoCredits : bandSlug.name}`} priority={false} style={{height: 'cover'}}/>)
         }
         <figcaption className="absolute bottom-0 w-full text-orange text-lg">
             <Link href={`/bands/${band.slug}`}>
@@ -33,7 +33,7 @@ function ArtistCardSmall({aBand, pos}) {
     </figure>
     <div className="flex flex-col flex-wrap justify-items-center">
         {band.start ? <p className="flex flex-wrap m-4 p-4 gap-4"><strong>Spiller: </strong>{band.start} - {band.end}</p> : null}
-        <p className="flex justify-left mx-4 gap-4 text-sm"><strong>Genre: </strong>{band.genre ? band.genre : null}</p>
+        <p className="flex justify-left m-4 gap-4 text-sm"><strong>Genre: </strong>{band.genre ? band.genre : null}</p>
     </div>
 </div>
   )

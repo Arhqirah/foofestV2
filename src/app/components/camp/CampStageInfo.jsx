@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import Image from 'next/image';
 const stageInfo = [
@@ -7,16 +8,16 @@ const stageInfo = [
 ]
 export default function CampStageInfo({stages, themeColor}) {
     const currentStage = stageInfo.find(s => s.name === stages);
-  return (
-    <article className="flex flex-col gap-12">
-    <div>
-        <h3>Det skal du vide om <strong className={`text-${themeColor[stages]}`}>{currentStage.name}</strong></h3>
-        <h4>TEMA: {currentStage.theme}</h4>
-    </div>
-    <div className="grid gap-6 sm:grid-cols-2">
-        <p>{currentStage.info}</p>
-        <Image src={`/assets/img/${stages}Scene.webp`} alt={`This is ${currentStage.name}`} height={600} width={600} priority={false}/>
-    </div>
-</article>
-  )
+    return (
+      <article id="campInfo" className="flex flex-col gap-12">
+        <div>
+            <h3>Det skal du vide om <strong className={`text-${themeColor[stages]}`}>{currentStage.name}</strong></h3>
+            <h4>TEMA: {currentStage.theme}</h4>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+            <p>{currentStage.info}</p>
+            <Image src={`/assets/img/${stages}Scene.webp`} alt={`This is ${currentStage.name}`} height={600} width={600} priority={false}/>
+        </div>
+      </article>
+    )
 }
