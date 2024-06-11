@@ -1,32 +1,44 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "./Button";
 
-export default function bandList({data}) {
-    const [list, setList] = useState(20)
-    const handleMore = () => {
-      setList(list + 8);
-    }
-    const handleLess = () => {
-      setList(list - 8);
-    }
+export default function bandList({bands}) {
+  const [bigBands, setBigBands] = useState([]);
+  const [otherBands, setOtherBands] = useState([]);
+  useEffect(() => {
+    const big = bands.filter(bigband => bigband.isBig === true);
+    const small = bands.filter(smallband => smallband.isBig === false);
+    setBigBands(big);
+    setOtherBands(small);
+  }, [])
     return (
-    <div className="flex flex-wrap flex-row h-fit w-fit gap-4 place-content-center">
-      <ul className="flex items-center place-content-center flex-wrap gap-2">
-          {data.slice(0, list).map((band, index) => {
-            return (
-              <li className="flex" key={index}>
-                <Link className={`p-3 h-fit hover:underline hover:text-orange-light ${band.isBig ? 'text-lg' : 'text-md'}`} href={`/bands/${band.slug}`}>
-                  {band.name}
-                </Link>
+    <article className="w-full flex flex-wrap flex-row gap-4 text-pretty">
+      <ul className="flex flex-wrap justify-center tracking-tight lg:tracking-normal">
+        {bigBands.map((band, index, array) => {
+          return (
+            <React.Fragment key={band.slug}>
+              <li>
+                <Link href={`/bands/${band.slug}`} className="text-white hover:text-white-dark text-3xl transition text-stroke-1 hover:text-stroke-0" prefetch={false}>{band.name}</Link>
               </li>
-            );
-          })}
-        </ul>
-        {/* måske laves lidt penere og med animation? */}
-        {list >= 30 && <Button variant="orange" onClick={handleLess} randomClass="text-lg p-8">Vis færre</Button>}
-        {list >= 60 ? null : <Button variant="orange" onClick={handleMore} randomClass="text-lg p-8">Vis flere</Button>}
-      </div>
+              {index !== array.length -1 && (<li className="align-center text-white hover:text-white-light text-3xl font-normal mx-2">/</li>)}
+            </React.Fragment>
+          ) 
+        })}
+      </ul>
+      <ul className="flex grow flex-wrap justify-center gap-2 text-md">
+        {otherBands.map((band, index, array) => {
+          const bandKey = band.slug + index;
+          return (
+            <React.Fragment key={bandKey}>
+              <li>
+                <Link href={`/bands/${band.slug}`} className="text-white hover:text-white-dark transition-colors" prefetch={false}>{band.name}</Link>
+              </li>
+              {index !== array.length -1 && (<li className=" text-white hover:text-white-light text-md font-normal mx-2">/</li>)}
+            </React.Fragment>
+          ) 
+        })}
+      </ul>
+      </article>
     )
   }

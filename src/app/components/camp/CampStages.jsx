@@ -9,7 +9,7 @@ export default function CampStages({stages, handleStage, theme}) {
                 <ul className="flex flex-row justify-center flex-wrap gap-4">   
                     {stages.map((singleStage, i) => (
                         <li key={i}>
-                            <Button variant={theme[singleStage]} onClick={handleStage}>{singleStage}</Button>
+                            <Button variant={theme[singleStage]} onStageChange={""} onClick={handleStage}>{singleStage}</Button>
                         </li>
                     ))}
                 </ul>

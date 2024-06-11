@@ -3,33 +3,30 @@ import { metalQuery } from "../util/metalQuery";
 import Image from "next/image";
 import Link from "next/link";
 
-function ArtistCard({aBand, pos}) {
-    const index = pos;
+export default function ArtistCard({aBand}) {
+    const index = Math.floor(Math.random() * 12 + 1);
     const band = aBand;
     const metal = metalQuery();
-    const smallSize = 400;
-
+    const smallSize = 600;
     return (
-        <article className={`grid grid-cols-1 hover:shadow-orange shadow-lg rounded-lg`}>
-            <figure className="flex relative object-contain h-[min(400px,600px)] w-full">
-                {band.logo.startsWith("http") 
+        <li key={band.act} className={`grid grid-cols-1 bg-black hover:shadow-orange shadow-lg rounded-lg align-top h-full p-4`}>
+                <Link href={`/bands/${band.slug}`} prefetch={false}>
+            <figure className="w-full h-[400px] relative object-cover object-center">
+                {band.logo.startsWith("https") 
                     ?  
-                    (<Image src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={`Picture of ${band.act}`} priority={false} />)
+                    (<Image className="h-full w-full object-cover object-center" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={`Picture of ${band.act}`} priority={false} />)
                     :
-                    (<Image src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={`${band.logoCredits ? band.logoCredits : band.name}`} priority={false}/>)
+                    (<Image className="h-full w-full object-cover object-center" src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={`${band.logoCredits ? band.logoCredits : band.name}`} priority={false}/>)
                 }
-                <figcaption >
+                <figcaption className="grid grid-flow-col w-full absolute top-0 justify-between p-2">
+                    <span className="bg-white text-black border border-black rounded p-2 h-fit text-sm">{band.genre ? band.genre : null}</span>
+                    {band.start ? <span className="bg-white text-black border border-black rounded h-fit p-2">{band.start} - {band.end}</span> : null}
                 </figcaption>
             </figure>
-            <div className="flex flex-col flex-wrap">
-                    <Link className="w-full h-fit text-center text-orange text-lg " href={`/bands/${band.slug}`} prefetch={false}>
-                        {band.act}
-                    </Link>
-                {band.start ? <p className="flex flex-wrap m-2 p-2 gap-4"><strong>Spiller: </strong>{band.start} - {band.end}</p> : null}
-                <p className="flex flex-wrap m-2 p-2 gap-4"><strong>Genre: </strong>{band.genre ? band.genre : null}</p>
-            </div>
-        </article>
+            <h2 className="w-full h-fit p-2 text-center text-xl">
+                {band.act}
+            </h2>
+            </Link>
+        </li>
     )
 }
-
-export default ArtistCard
