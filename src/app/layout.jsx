@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="da" className="bg-black">
       <body className={`mx-auto max-w-[1920px] 4xl:border-orange 4xl:border-x-4 ${skranji.className}`}>
         <Sidebar></Sidebar>
-        <Header customStyle="-mb-12"/>
+        <Header/>
         <main className="flex flex-col">{children}</main>
         <Footer customStyle="-mt-4"/>
       </body>
