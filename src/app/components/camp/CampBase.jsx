@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getDay } from '@/app/util/filter';
 import FAQList from '../FaqList';
 import CampSchedule from './CampSchedule';
@@ -25,9 +25,10 @@ export default function CampBase({bandsData, scheduleData}) {
     const newStage = schedule.filter(clickedStage => clickedStage.stage === filterOnStage && clickedStage.act !== 'break')
     setStage(newStage);
   }
-  const handleDay = (newDay) => {
+  const handleDay = (newDay, newTheme) => {
     const setday = getDay(newDay);
     setDay(setday.short);
+    setTheme(newTheme)
   };
   const handleStage = (newStage, newTheme) => {
     setStage(newStage);
@@ -38,9 +39,9 @@ export default function CampBase({bandsData, scheduleData}) {
   return (
     <>
     <FancyCampCircle stageSelect={(aStage, aTheme) => handleStage(aStage, aTheme)}/>
-    <CampSchedule bands={bands} stage={stage} day={day} theme={theme} themeColor={themeColor} onDayChange={(newDay) => handleDay(newDay)} />
+    <CampSchedule bands={bands} stages={stage} day={day} theme={theme} themeColor={themeColor} onDayChange={(newDay, aTheme) => handleDay(newDay, aTheme)} />
     <CampStageInfo stages={stage} themeColor={themeColor}/>
-    <FAQList></FAQList>
+    <FAQList />
     </>
   )
 }
