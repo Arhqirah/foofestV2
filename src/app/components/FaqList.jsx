@@ -11,8 +11,8 @@ const FAQList = () => {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <h1 className="text-xl font-bold mb-6">Det skal du vide om FooFest</h1>
+    <div className="max-w-6xl mx-auto p-8">
+      <h1 className="text-xl font-bold mb-6">Det skal du vide om <strong className='text-3xl'>FooFest</strong></h1>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />

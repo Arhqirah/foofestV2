@@ -5,6 +5,7 @@ import FAQList from '../FaqList';
 import CampSchedule from './CampSchedule';
 import CampStageInfo from './CampStageInfo';
 import FancyCampCircle from '../FancyCampCircle';
+import Divider from '../Divider';
 
 export default function CampBase({bandsData, scheduleData}) {
 
@@ -40,6 +41,7 @@ export default function CampBase({bandsData, scheduleData}) {
     <>
     <FancyCampCircle stageSelect={(aStage, aTheme) => handleStage(aStage, aTheme)}/>
     <CampSchedule bands={bands} stages={stage} day={day} theme={theme} themeColor={themeColor} onDayChange={(newDay, aTheme) => handleDay(newDay, aTheme)} />
+    <Divider />
     <CampStageInfo stages={stage} themeColor={themeColor}/>
     <FAQList />
     </>

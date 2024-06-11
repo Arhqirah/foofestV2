@@ -14,19 +14,19 @@ async function bandPage({params}) {
   return (
     <>
       <Section title={null} customStyle={`!m-0 !p-0 w-full !max-w-[1920px] place-self-center -mb-48 -z-1`}>
-        <div className="-mt-12 place-self-center w-full h-[400px] bg-[url('/assets/img/DummyHeaderV2.webp')] object-cover bg-cover bg-top bg-no-repeat md:bg-center ">
-        <h2 className="text-center">{bandSlug.name}</h2>
+        <div className="flex border-orange border-t-4 justify-center items-end -mt-12 w-full h-[300px] bg-[url('/assets/img/DummyHeaderV2.webp')] object-cover bg-cover bg-center bg-no-repeat">
+        <h2 className="bg-clip-text bg-black stroke-black stroke-1 text-3xl font-extrabold px-2">{bandSlug.name}</h2>
         </div>
       </Section>
       <Divider customStyle="z-10 -mt-4" />
-      <Section title={null} customStyle={`m-0 p-0 w-full max-w-[1600px] place-self-center place-items-center`}>
+      <Section title={null} customStyle={`w-full p-4 w-full max-w-3/4 mx-auto lg:w-3/4 md:p-2`}>
         <article className="flex flex-col gap-6">
           <div className="grid md:grid-cols-2 gap-6">
-            <figure className={`w-full h-full border-2 border-${themeColor[filteredbandSlug.stage] || "green"}`}>
+            <figure className={`w-full h-full border-2 border-${themeColor[filteredbandSlug[0].stage] || "green"}`}>
               {bandSlug.logo.startsWith("http") ?  
-                (<Image className="h-full w-full object-cover object-center"  src={`${bandSlug.logo}${smallSizes}x${smallSizes}`} height={600} width={600} alt={`This is ${bandSlug.name}`} priority={false}></Image>)
+                (<Image className="h-full w-full object-cover object-center"  src={`${bandSlug.logo}${smallSizes}x${smallSizes}`} height={500} width={500} alt={`This is ${bandSlug.name}`} priority={false}></Image>)
                 :
-                (<Image className="h-full w-full object-cover object-center" src={`${rootUrl}/logos/${bandSlug.logo}`} height={600} width={600} alt={`${bandSlug.logoCredits ? bandSlug.logoCredits : bandSlug.name}`} priority={false}></Image>)
+                (<Image className="h-full w-full object-cover object-center" src={`${rootUrl}/logos/${bandSlug.logo}`} height={500} width={500} alt={`${bandSlug.logoCredits ? bandSlug.logoCredits : bandSlug.name}`} priority={false}></Image>)
               } 
             </figure>
             <div className="grid h-fit gap-6">

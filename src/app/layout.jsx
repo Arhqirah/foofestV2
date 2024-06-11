@@ -8,7 +8,7 @@ const skranji = Skranji({ weight: ["400", "700"], subsets: ["latin"]});
 
 export const metadata = {
   title: "FooFest 2024",
-  description: "Festivalen der spiller alle timer og dager, hele året rundt! ",
+  description: "Festivalen der spiller alle timer og dager, hele året rundt!",
 };
 
 
