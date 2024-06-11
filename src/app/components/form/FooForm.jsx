@@ -11,11 +11,6 @@ import ThankYou from '@/app/components/form/ThankYou';
 function FooForm() {
   const router = useRouter();
   const TIMER_DURATION = 300;
-
-  const handleClick = () => {
-    router.push('/');
-  };
-
   const [stage, setStage] = useState(1);
   const [timer, setTimer] = useState(TIMER_DURATION);
   const [formData, setFormData] = useState({
@@ -25,21 +20,16 @@ function FooForm() {
     tents: { twoMan: 0, threeMan: 0 },
     extras: { item1: false, item2: false },
     personalInfo: [],
-    paymentDetails: null, 
+    paymentDetails: null,
   });
-
-  const [expandedTickets, setExpandedTickets] = useState({
-    Bonde: false,
-    Viking: false,
-  });
-
+  const [expandedTickets, setExpandedTickets] = useState({ Bonde: false, Viking: false });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let interval;
     if (stage >= 2 && stage <= 5) {
-      interval = setInterval(() => {
-        setTimer(prevTimer => {
+      const interval = setInterval(() => {
+        setTimer((prevTimer) => {
           if (prevTimer <= 1) {
             clearInterval(interval);
             setStage(1);
@@ -48,10 +38,8 @@ function FooForm() {
           return prevTimer - 1;
         });
       }, 1000);
-    } else {
-      clearInterval(interval);
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(interval);
   }, [stage]);
 
   useEffect(() => {
@@ -62,16 +50,13 @@ function FooForm() {
 
   const validateStage = () => {
     let isValid = true;
-    let newErrors = {};
-
+    const newErrors = {};
     const totalTickets = formData.quantities.viking + formData.quantities.bonde;
-    const totalTentCapacity = (formData.tents.twoMan * 2) + (formData.tents.threeMan * 3);
+    const totalTentCapacity = formData.tents.twoMan * 2 + formData.tents.threeMan * 3;
 
-    if (stage === 2) {
-      if (totalTickets === 0) {
-        newErrors.ticketQuantity = 'Vælg mindst én billet';
-        isValid = false;
-      }
+    if (stage === 2 && totalTickets === 0) {
+      newErrors.ticketQuantity = 'Vælg mindst én billet';
+      isValid = false;
     } else if (stage === 3) {
       if (!formData.camp) {
         newErrors.camp = 'Vælg en camp';
@@ -103,37 +88,79 @@ function FooForm() {
           }
         }
       });
-    } else if (stage === 5) {
-      if (!formData.paymentDetails) {
-        newErrors.payment = 'Udfyld betalingsoplysningerne';
-        isValid = false;
-      }
+    } else if (stage === 5 && !formData.paymentDetails) {
+      newErrors.payment = 'Udfyld betalingsoplysningerne';
+      isValid = false;
     }
 
     setErrors(newErrors);
     return isValid;
   };
 
-  const nextStage = () => {
+  const nextStage = async () => {
+    if (loading) return;
     if (validateStage()) {
-      setStage(stage + 1);
+      setLoading(true);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setStage((prevStage) => prevStage + 1);
+      } catch (error) {
+        console.error('En fejl opstod:', error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const prevStage = () => setStage(stage - 1);
+  const prevStage = () => setStage((prevStage) => prevStage - 1);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedData = { ...prevData };
+      if (type === 'checkbox') {
+        updatedData.extras[name] = checked;
+      } else if (name === 'twoMan' || name === 'threeMan') {
+        const newTents = { ...prevData.tents, [name]: Math.max(0, parseInt(value) || 0) };
+        const totalTickets = prevData.quantities.viking + prevData.quantities.bonde;
+        const totalTentCapacity = newTents.twoMan * 2 + newTents.threeMan * 3;
+
+        const newErrors = { ...errors };
+        if (totalTentCapacity < totalTickets) {
+          newErrors.tents = 'Vælg nok teltpladser til alle personer';
+        } else if (totalTentCapacity > totalTickets + 2) {
+          newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+2 er tilladt)';
+        } else {
+          delete newErrors.tents;
+        }
+
+        setErrors(newErrors);
+        updatedData.tents = newTents;
+      } else {
+        updatedData[name] = value;
+      }
+      return updatedData;
+    });
+  };
+
+  const handlePersonalInfoChange = (index, field, value) => {
+    setFormData((prevData) => {
+      const updatedPersonalInfo = [...prevData.personalInfo];
+      updatedPersonalInfo[index][field] = value;
+      return { ...prevData, personalInfo: updatedPersonalInfo };
+    });
+  };
 
   const incrementTicket = (type) => {
-    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
-    if (totalTickets < 10) {
-      setFormData((prevData) => ({
-        ...prevData,
-        quantities: {
-          ...prevData.quantities,
-          [type]: prevData.quantities[type] + 1,
-        },
-        personalInfo: [...prevData.personalInfo, { ticketType: type, firstName: '', lastName: '', email: '', phone: '' }],
-      }));
-    }
+    setFormData((prevData) => {
+      const totalTickets = prevData.quantities.viking + prevData.quantities.bonde;
+      if (totalTickets < 10) {
+        const updatedQuantities = { ...prevData.quantities, [type]: prevData.quantities[type] + 1 };
+        const updatedPersonalInfo = [...prevData.personalInfo, { ticketType: type, firstName: '', lastName: '', email: '', phone: '' }];
+        return { ...prevData, quantities: updatedQuantities, personalInfo: updatedPersonalInfo };
+      }
+      return prevData;
+    });
   };
 
   const decrementTicket = (type) => {
@@ -141,104 +168,37 @@ function FooForm() {
       const updatedPersonalInfo = [...prevData.personalInfo];
       let updatedQuantity = prevData.quantities[type];
       if (updatedQuantity > 0) {
-        updatedPersonalInfo.splice(updatedPersonalInfo.findIndex(info => info.ticketType === type), 1);
+        updatedPersonalInfo.splice(updatedPersonalInfo.findIndex((info) => info.ticketType === type), 1);
         updatedQuantity -= 1;
       }
-      return {
-        ...prevData,
-        quantities: {
-          ...prevData.quantities,
-          [type]: updatedQuantity,
-        },
-        personalInfo: updatedPersonalInfo,
-      };
-    });
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const totalTickets = formData.quantities.viking + formData.quantities.bonde;
-    let newErrors = { ...errors };
-
-    if (type === 'checkbox') {
-      setFormData((prevData) => ({
-        ...prevData,
-        extras: {
-          ...prevData.extras,
-          [name]: checked,
-        },
-      }));
-    } else if (name === 'twoMan' || name === 'threeMan') {
-      const newTents = {
-        ...formData.tents,
-        [name]: Math.max(0, parseInt(value) || 0),
-      };
-      const totalTentCapacity = (newTents.twoMan * 2) + (newTents.threeMan * 3);
-
-      if (totalTentCapacity < totalTickets) {
-        newErrors.tents = 'Vælg nok teltpladser til alle personer';
-      } else if (totalTentCapacity > totalTickets + 2) {
-        newErrors.tents = 'Vælg ikke flere teltpladser end nødvendigt (+1 er tilladt)';
-      } else {
-        delete newErrors.tents;
-      }
-
-      setErrors(newErrors);
-      setFormData((prevData) => ({
-        ...prevData,
-        tents: newTents,
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handlePersonalInfoChange = (index, field, value) => {
-    setFormData((prevData) => {
-      const updatedPersonalInfo = [...prevData.personalInfo];
-      updatedPersonalInfo[index][field] = value;
-      return {
-        ...prevData,
-        personalInfo: updatedPersonalInfo,
-      };
+      return { ...prevData, quantities: { ...prevData.quantities, [type]: updatedQuantity }, personalInfo: updatedPersonalInfo };
     });
   };
 
   const toggleExpand = (type) => {
     setExpandedTickets((prevState) => ({
-      Bonde: type === 'Bonde' ? !prevState.Bonde : false,
-      Viking: type === 'Viking' ? !prevState.Viking : false,
+      ...prevState,
+      [type]: !prevState[type],
     }));
   };
 
   const handleCampSelection = (camp) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      camp,
-    }));
+    setFormData((prevData) => ({ ...prevData, camp }));
   };
 
   const calculateTotalPrice = () => {
-    const ticketPrice = (formData.quantities.viking * 1299) + (formData.quantities.bonde * 799);
-    const tentPrice = (formData.tents.twoMan * 299) + (formData.tents.threeMan * 399);
+    const ticketPrice = formData.quantities.viking * 1299 + formData.quantities.bonde * 799;
+    const tentPrice = formData.tents.twoMan * 299 + formData.tents.threeMan * 399;
     const extrasPrice = (formData.extras.item1 ? 249 : 0) + (formData.extras.item2 ? 39 : 0);
     return ticketPrice + tentPrice + extrasPrice;
   };
 
   const handlePayment = (paymentDetails) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      paymentDetails,
-    }));
+    setFormData((prevData) => ({ ...prevData, paymentDetails }));
     nextStage();
   };
 
-  const getAllEmails = () => {
-    return formData.personalInfo.map(info => info.email);
-  };
+  const getAllEmails = () => formData.personalInfo.map((info) => info.email);
 
   const variants = {
     initial: { opacity: 0, x: -100 },
@@ -248,14 +208,7 @@ function FooForm() {
 
   return (
     <div className={`p-4 flex flex-col ${stage === 1 || stage === 6 ? 'items-center' : ''}`}>
-      <motion.div
-        key={stage}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={variants}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div key={stage} initial="initial" animate="animate" exit="exit" variants={variants} transition={{ duration: 0.5 }}>
         {stage === 1 && (
           <TicketSelection
             formData={formData}
@@ -269,7 +222,6 @@ function FooForm() {
         )}
         {stage === 2 && (
           <>
-            
             <TicketQuantity
               formData={formData}
               setFormData={setFormData}
@@ -285,7 +237,6 @@ function FooForm() {
         )}
         {stage === 3 && (
           <>
-            
             <CampAndTentSelection
               formData={formData}
               setFormData={setFormData}
@@ -302,7 +253,6 @@ function FooForm() {
         )}
         {stage === 4 && (
           <>
-            
             <TicketInformation
               formData={formData}
               setFormData={setFormData}
@@ -317,9 +267,9 @@ function FooForm() {
         )}
         {stage === 5 && (
           <>
-            
             <Confirmation
               formData={formData}
+              nextStage={nextStage}
               prevStage={prevStage}
               handlePayment={handlePayment}
               calculateTotalPrice={calculateTotalPrice}
@@ -328,12 +278,7 @@ function FooForm() {
             <div className="timer float-end">Udløber om: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</div>
           </>
         )}
-        {stage === 6 && (
-          <ThankYou
-            emails={getAllEmails()}
-            handleClick={handleClick}
-          />
-        )}
+        {stage === 6 && <ThankYou emails={getAllEmails()} handleClick={() => router.push('/')} />}
       </motion.div>
     </div>
   );

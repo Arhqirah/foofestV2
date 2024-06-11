@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { rootUrl } from '@/app/lib/apiCall';
 import CampButton from '@/app/components/form/CampButton';
 import ShoppingCart from '@/app/components/form/ShoppingCart';
-import axios from 'axios';
 import supabase from '@/app/lib/supabaseClient';
 
 const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, handleCampSelection, handleInputChange, errors, setErrors, calculateTotalPrice }) => {
@@ -17,8 +16,9 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
   const fetchAvailableSpots = async () => {
     try {
-      const response = await axios.get(`${rootUrl}/available-spots`);
-      const spots = response.data.reduce((acc, area) => {
+      const response = await fetch(`${rootUrl}/available-spots`);
+      const data = await response.json();
+      const spots = data.reduce((acc, area) => {
         acc[area.area] = area.available;
         return acc;
       }, {});
@@ -53,15 +53,22 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
     try {
       console.log('Attempting to reserve spot with backend');
-      const response = await axios.put(`${rootUrl}/reserve-spot`, {
-        area: formData.camp,
-        amount: totalTickets,
+      const response = await fetch(`${rootUrl}/reserve-spot`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          area: formData.camp,
+          amount: totalTickets,
+        }),
       });
+      const data = await response.json();
 
-      console.log('Response from backend:', response.data);
+      console.log('Response from backend:', data);
 
-      if (response.data.message) {
-        setReservationMessage(response.data.message);
+      if (data.message) {
+        setReservationMessage(data.message);
         setReservationSuccess(true);
         setReservationError('');
 
@@ -70,7 +77,7 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
 
         const formattedExpirationTime = expirationTime.toISOString();
 
-        const { data, error } = await supabase
+        const { data: supabaseData, error } = await supabase
           .from('reservations')
           .insert([
             {
@@ -84,12 +91,12 @@ const CampAndTentSelection = ({ formData, setFormData, nextStage, prevStage, han
           console.error('Error saving reservation to Supabase:', error);
           setReservationMessage('Error saving reservation to database');
         } else {
-          console.log('Reservation saved to Supabase:', data);
+          console.log('Reservation saved to Supabase:', supabaseData);
           nextStage();
         }
       } else {
-        console.error('Reservation error:', response.data);
-        setReservationMessage(response.data.error || 'An error occurred while reserving a spot.');
+        console.error('Reservation error:', data);
+        setReservationMessage(data.error || 'An error occurred while reserving a spot.');
       }
       await fetchAvailableSpots();
     } catch (error) {
