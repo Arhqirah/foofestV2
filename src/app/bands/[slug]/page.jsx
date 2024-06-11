@@ -14,7 +14,7 @@ async function bandPage({params}) {
   return (
     <>
       <Section title={null} customStyle={`!m-0 !p-0 w-full !max-w-[1920px] place-self-center -mb-48 -z-1`}>
-        <div className="-mt-12 place-self-center w-full h-[400px] bg-[url('/assets/img/DummyHeader.webp')] object-cover bg-cover bg-top bg-no-repeat md:bg-center ">
+        <div className="-mt-12 place-self-center w-full h-[400px] bg-[url('/assets/img/DummyHeaderV2.webp')] object-cover bg-cover bg-top bg-no-repeat md:bg-center ">
         <h2 className="text-center">{bandSlug.name}</h2>
         </div>
       </Section>
