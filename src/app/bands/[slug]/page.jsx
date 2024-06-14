@@ -20,7 +20,7 @@ async function bandPage({params}) {
       <Section title={null} customStyle={`m-0 p-0 w-full max-w-[1600px] place-self-center place-items-center`}>
         <article className="flex flex-col gap-6">
           <div className="grid md:grid-cols-2 gap-6">
-            <figure className={`w-full h-full border-2 border-${themeColor[filteredbandSlug.stage] || "green"}`}>
+            <figure className={`w-full h-full border-2 border-${themeColor[filteredbandSlug[0].stage]}`}>
               {bandSlug.logo.startsWith("http") ?  
                 (<Image className="h-full w-full object-cover object-center"  src={`${bandSlug.logo}${smallSizes[0]}x${smallSizes[1]}`} height={800} width={800} alt={`This is ${bandSlug.name}`} priority={false}></Image>)
                 :

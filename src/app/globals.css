@@ -25,39 +25,46 @@
     --gradient-end: #03101D;
   }
 }
-body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  color: var(--text);
-  background: var(--gradient);
+@layer base {
+  body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    color: var(--text);
+    background: var(--gradient);
+  }
+  h1 {
+    font-size: var(--font-size-5);
+  }
+  h2 {
+    font-size: var(--font-size-4);
+  }
+  h3 {
+    font-size: var(--font-size-3);
+  }
+  h4 {
+    font-size: var(--font-size-2);
+  }
+  p {
+    font-size: var(--font-size-1);
+  }
+  .small {
+    font-size: var(--font-size--1);
+  }
+  .text-stroke-0 {
+    text-shadow: none;
+  }
+  .text-stroke-1 {
+    -webkit-text-stroke: 1px var(--text);
+  }
 }
-h1 {
-  font-size: var(--font-size-5);
+@layer components {
+  .clip-wedge {
+    clip-path: polygon(50% 100%,100% 0,0 0);
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+  } 
 }
-h2 {
-  font-size: var(--font-size-4);
-}
-h3 {
-  font-size: var(--font-size-3);
-}
-h4 {
-  font-size: var(--font-size-2);
-}
-p {
-  font-size: var(--font-size-1);
-}
-.small {
-  font-size: var(--font-size--1);
-}
-.clip-wedge {
- clip-path: polygon(50% 100%,100% 0,0 0);
-  border-top-left-radius: 100%;
-  border-top-right-radius: 100%;
-}
-
-
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

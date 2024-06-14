@@ -1,22 +1,23 @@
 "use client";
-import { useState, useEffect, useCallBack} from "react";
+import { useState, useEffect} from "react";
 import Button from "../Button";
 
-export default function CampDays(props) {
-    const {theme, onDayChange, weekDays, stages, themeColor} = props;
-    const [newColor, setNewColor] = useState(theme);
-    const [active, setActive] = useState(null);
-    const [newTheme, setNewTheme] = useState(theme);
+export default function CampDays({theme, onDayChange, stages, themeColor}) {
+    const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const [currentTheme, setCurrentTheme] = useState('green');
+    const [active, setActive] = useState('Monday');
+
+    const handleStage = (select) => {
+        setCurrentTheme(select);
+    }
     useEffect(() => {
-        setNewTheme(themeColor[stages])
+        setCurrentTheme(themeColor[stages]);
     })
-
-
     return (
     <div className="flex flex-row justify-center flex-wrap gap-4">
         {weekDays.map(singleDay => 
-                <Button key={singleDay} variant={newTheme} onClick={() => {onDayChange(singleDay, themeColor[stages]); setActive(singleDay);}} randomClass={`${active === singleDay ? `bg-grey` : `bg-${newColor}`}`}>{singleDay}</Button>
-        )}
+                <Button key={singleDay} variant={theme} onClick={() => {onDayChange(singleDay); setActive(singleDay); handleStage(themeColor[stages])}} randomClass={`${active === singleDay ? `bg-grey` : `bg-${currentTheme}`}`}>{singleDay}</Button>
+                )}
     </div>
     );
 }

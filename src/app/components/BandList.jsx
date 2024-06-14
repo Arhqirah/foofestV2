@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Button from "./Button";
 
 export default function bandList({bands}) {
   const [bigBands, setBigBands] = useState([]);
@@ -13,13 +12,13 @@ export default function bandList({bands}) {
     setOtherBands(small);
   }, [])
     return (
-    <article className="w-full flex flex-wrap flex-row gap-4 text-pretty">
-      <ul className="flex flex-wrap justify-center tracking-tight lg:tracking-normal">
+      <article className="w-full p-2 flex flex-wrap flex-row gap-4 text-pretty xl:w-3/4">
+      <ul className="flex flex-wrap justify-center">
         {bigBands.map((band, index, array) => {
           return (
             <React.Fragment key={band.slug}>
               <li>
-                <Link href={`/bands/${band.slug}`} className="text-white hover:text-white-dark text-3xl transition text-stroke-1 hover:text-stroke-0" prefetch={false}>{band.name}</Link>
+                <Link href={`/bands/${band.slug}`} className="text-black hover:text-white text-3xl transition text-stroke-1 hover:text-stroke-0" prefetch={false}>{band.name}</Link>
               </li>
               {index !== array.length -1 && (<li className="align-center text-white hover:text-white-light text-3xl font-normal mx-2">/</li>)}
             </React.Fragment>
