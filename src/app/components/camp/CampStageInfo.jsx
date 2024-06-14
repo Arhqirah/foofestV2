@@ -15,7 +15,7 @@ const stageInfo = [
 export default function CampStageInfo({stages, themeColor}) {
     const currentStage = stageInfo.find(s => s.name === stages);
     return (
-      <article id="campInfo" className="flex flex-col gap-12 w-full p-8 lg:p-0 lg:w-3/4">
+      <article id="campInfo" className="flex flex-col gap-12 w-full p-8 lg:p-0 lg:w-3/4 mb-12">
         <div>
             <h3>Det skal du vide om <strong className={`text-${themeColor[currentStage.name]}`}>{currentStage.name}</strong></h3>
             <h4>TEMA: {currentStage.theme}</h4>

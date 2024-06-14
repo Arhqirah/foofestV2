@@ -1,4 +1,5 @@
 // pages/index.js
+"use client";
 import FAQItem from '@/app/components/Faq';
 
 const FAQList = () => {
