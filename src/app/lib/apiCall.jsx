@@ -44,16 +44,14 @@ export async function getAllAvailableSpots() {
   return await res.json();
 }
 
-export async function reserveSpot(areaInput, amountInput) {
+export async function reserveSpot(areaAmount, amountAmount) {
   let headersList = {
-    Accept: "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
     "Content-Type": "application/json",
   };
 
   let bodyContent = JSON.stringify({
-    area: areaInput,
-    amount: amountInput,
+    area: areaAmount,
+    amount: amountAmount,
   });
 
   let response = await fetch(`${rootUrl}/reserve-spot`, {
@@ -62,14 +60,11 @@ export async function reserveSpot(areaInput, amountInput) {
     headers: headersList,
   });
 
-  let data = await response.json();
-  return data;
+  return await response.json();
 }
 
 export async function completeReservation(id) {
   let headersList = {
-    Accept: "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
     "Content-Type": "application/json",
   };
 
@@ -82,7 +77,5 @@ export async function completeReservation(id) {
     body: bodyContent,
     headers: headersList,
   });
-
-  let data = await response.json();
-  return data;
+  return await response.json();
 }

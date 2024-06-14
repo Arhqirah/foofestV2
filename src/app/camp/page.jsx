@@ -2,7 +2,7 @@ import React from "react";
 import CampBase from "../components/camp/CampBase";
 import Section from "../components/Section";
 import { getFlatSchedule } from "../lib/apiCall";
-import { mergeData, getDay } from "../util/filter";
+import { mergeData } from "../util/filter";
 
 export default async function Camp() {
     const flatSchedule = await getFlatSchedule();

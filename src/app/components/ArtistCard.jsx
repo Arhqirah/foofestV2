@@ -9,23 +9,23 @@ export default function ArtistCard({aBand}) {
     const metal = metalQuery();
     const smallSize = 600;
     return (
-        <li key={band.act} className={`grid grid-cols-1 bg-black hover:shadow-orange shadow-lg rounded-lg align-top h-full p-4`}>
-                <Link href={`/bands/${band.slug}`} prefetch={false}>
-            <figure className="w-full h-[400px] relative object-cover object-center">
-                {band.logo.startsWith("https") 
-                    ?  
-                    (<Image className="h-full w-full object-cover object-center" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={`Picture of ${band.act}`} priority={false} />)
-                    :
-                    (<Image className="h-full w-full object-cover object-center" src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={`${band.logoCredits ? band.logoCredits : band.name}`} priority={false}/>)
-                }
-                <figcaption className="grid grid-flow-col w-full absolute top-0 justify-between p-2">
-                    <span className="bg-white text-black border border-black rounded p-2 h-fit text-sm">{band.genre ? band.genre : null}</span>
-                    {band.start ? <span className="bg-white text-black border border-black rounded h-fit p-2">{band.start} - {band.end}</span> : null}
-                </figcaption>
-            </figure>
-            <h2 className="w-full h-fit p-2 text-center text-xl">
-                {band.act}
-            </h2>
+        <li key={band.act} className={`grid grid-cols-1 bg-black  hover:shadow-orange shadow-lg rounded-lg align-top h-full p-4`}>
+            <Link href={`/bands/${band.slug}`} prefetch={false}>
+                <figure className="w-full h-[400px] relative object-cover object-center">
+                    {band.logo.startsWith("https") 
+                        ?  
+                        (<Image className="h-full w-full object-cover object-center" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={600} width={600} alt={`Picture of ${band.act}`} priority={false} />)
+                        :
+                        (<Image className="h-full w-full object-cover object-center" src={`${rootUrl}/logos/${band.logo}`} height={600} width={600} alt={`${band.logoCredits ? band.logoCredits : band.name}`} priority={false}/>)
+                        }
+                    <figcaption className="grid grid-flow-col w-full absolute top-0 justify-between p-2">
+                        <span className="bg-white text-black border border-black rounded p-2 h-fit text-sm">{band.genre ? band.genre : null}</span>
+                        {band.start ? <span className="bg-white text-black border border-black rounded h-fit p-2">{band.start} - {band.end}</span> : null}
+                    </figcaption>
+                </figure>
+                <h2 className="w-full h-fit p-2 text-center text-xl">
+                    {band.act}
+                </h2>
             </Link>
         </li>
     )

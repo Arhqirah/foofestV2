@@ -17,12 +17,12 @@ export default function CampStageInfo({stages, themeColor}) {
     return (
       <article id="campInfo" className="flex flex-col gap-12 w-full p-8 lg:p-0 lg:w-3/4">
         <div>
-            <h3>Det skal du vide om <strong className={`text-${themeColor[stages]}`}>{currentStage.name}</strong></h3>
+            <h3>Det skal du vide om <strong className={`text-${themeColor[currentStage.name]}`}>{currentStage.name}</strong></h3>
             <h4>TEMA: {currentStage.theme}</h4>
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
             <p>{currentStage.info}</p>
-            <Image src={`/assets/img/${stages}Scene.webp`} alt={`This is ${currentStage.name}`} height={600} width={600} priority={false}/>
+            <Image src={`/assets/img/${stages}Scene.webp`} alt={`Dette er ${currentStage.name}.`} height={600} width={600} priority={false}/>
         </div>
       </article>
     )

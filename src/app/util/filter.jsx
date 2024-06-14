@@ -61,6 +61,7 @@ export async function mergeData() {
             bandPlaying.members = isMatching.members;
             bandPlaying.genre = isMatching.genre;
             bandPlaying.slug = isMatching.slug;
+            bandPlaying.credit = isMatching.logoCredits;
           }
         });
       }
