@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
-async function FancyCampCounter({stage, pos}) {
+export default async function FancyCampCounter({stage, pos}) {
   const scene = ['Midgaard', 'Vanaheim', 'Alfheim']
   const color = ['text-green', 'text-gold', 'text-blue']
   return (
-
     <li className={`flex flex-col place-items-center gap-2`} key={stage.area}>
         <figure className="justify-center">
           <Image src={`/assets/icons/${scene[pos]}195.webp`} height={195} width={195} alt={stage.area}></Image>
@@ -24,4 +23,3 @@ async function FancyCampCounter({stage, pos}) {
     </li>
   )
 }
-export default FancyCampCounter;

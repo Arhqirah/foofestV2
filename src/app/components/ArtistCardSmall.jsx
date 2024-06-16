@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import { rootUrl } from "../lib/apiCall";
 import { metalQuery } from "../util/metalQuery";
 import Image from "next/image";
@@ -15,17 +17,19 @@ function ArtistCardSmall({aBand, aSchedule}) {
         Vanaheim: 'gold',
         Alfheim: 'blue',
     };
-
+    const [imgSrc, setImgSrc] = useState(
+        band.logo.startsWith('https') 
+          ? `${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`
+          : `${rootUrl}/logos/${band.logo}`
+      );
+    const handleError = () => {
+        setImgSrc('/assets/img/DummyArtist.webp');
+      };
   return (
       <li className={`grid border-4 border-${themeColor[stage]}-dark hover:shadow-orange shadow-lg rounded-lg overflow-hidden text-center`}>
         <Link href={`/bands/${band.slug}`}>
         <figure className="flex relative object-contain">
-            {band.logo.startsWith("http") 
-                ?  
-                (<Image className="h-auto object-cover" src={`${band.logo}${smallSize}x${smallSize}/?${metal}?${index}`} height={200} width={200} alt={`Picture of ${band.name}`} priority={false} />)
-                :
-                (<Image className="h-auto object-cover" src={`${rootUrl}/logos/${band.logo}`} height={200} width={200} alt={`${band.logoCredits ? band.logoCredits : band.name}`} priority={false}/>)
-            }
+            <Image onError={handleError} className="h-auto object-cover" src={imgSrc} height={200} width={200} alt={band.logoCredits ? band.logoCredits : band.name} priority={false} />
             <figcaption className="absolute top-0 right-0 p-2">
                 <span className="flex bg-white text-black border border-black rounded justify-left p-2 gap-4 text-sm">{band.genre ? band.genre : null}</span>
             </figcaption>
