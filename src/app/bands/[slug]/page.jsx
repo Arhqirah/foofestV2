@@ -1,9 +1,9 @@
-import {getBandsBySlug, getFlatSchedule} from "@/app/lib/apiCall";
+import { getBandsBySlug, getFlatSchedule } from "@/app/lib/apiCall";
 import ArtistSlug from "@/app/components/ArtistSlug";
 import Section from "@/app/components/Section";
 import Divider from "@/app/components/Divider";
 
-async function bandPage({params}) {
+export default async function bandPage({params}) {
   const bandNumber = Math.floor(Math.random() * 12 + 1);
   const { slug } = params;
   const bandSlug = await getBandsBySlug(slug);
@@ -25,5 +25,3 @@ async function bandPage({params}) {
     </>
   )
 }
-
-export default bandPage;

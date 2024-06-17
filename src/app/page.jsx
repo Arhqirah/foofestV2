@@ -1,6 +1,5 @@
 import React, {Fragment} from "react";
-import {getAllBands, getAllAvailableSpots, getFlatSchedule} from "./lib/apiCall";
-import ArtistCardSmall from "./components/ArtistCardSmall";
+import {getAllBands, getAllAvailableSpots} from "./lib/apiCall";
 import Link from "next/link";
 import Section from "./components/Section";
 import Divider from "./components/Divider";
@@ -9,11 +8,11 @@ import BandList from "./components/BandList";
 import FancyCampCounter from "./components/FancyCampCounter";
 import FancyCampCircle from "./components/FancyCampCircle";
 import FAQList from "./components/FaqList";
+import BandLive from "./components/BandLive";
 
 export default async function LandingPage() {
   const bands = await getAllBands();
   const stageSpots = await getAllAvailableSpots();
-  const schedule = await getFlatSchedule();
 
 return (
   <div className="flex w-full flex-col place-items-center">
@@ -26,14 +25,9 @@ return (
     <Section title="PROGRAM" customStyle="place-items-center gap-y-8 my-20">
       <BandList bands={bands}/>
       <div className="flex flex-col w-full h-fit gap-4">
-        <h3 className="text-center text-orange my-4">Spiller lige nu</h3>
+        <h2 className="uppercase text-center text-orange my-4">Spiller lige nu</h2>
         <ul className="flex flex-wrap justify-center gap-2 align-top">
-          {bands.slice(50,53).map(band => (
-          <Fragment key={band.name}>
-          <h4>{''}</h4>
-          <ArtistCardSmall aBand={band} />
-          </Fragment> 
-          ))}
+          <BandLive/>
         </ul>
       </div>
     </Section>

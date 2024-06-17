@@ -21,7 +21,7 @@ export default function ArtistCard({aBand}) {
         <li key={band.act} className={`grid grid-cols-1 bg-black  hover:shadow-orange shadow-lg rounded-lg align-top h-full p-4`}>
             <Link href={`/bands/${band.slug}`} prefetch={false}>
                 <figure className="w-full h-[400px] relative object-cover object-center">
-                    <Image onError={handleError} className="h-full w-full object-cover object-center" src={imgSrc} height={600} width={600} alt={band.logoCredits ? band.logoCredits : band.name} priority={false} />
+                    <Image onError={handleError} className="h-full w-full object-cover object-center" src={imgSrc} height={600} width={600} alt={band.logoCredits ? `This is ${band.logoCredits}` : `This is ${band.name}`} priority={false} />
                     <figcaption className="grid grid-flow-col w-full absolute top-0 justify-between p-2">
                         <span className="bg-white text-black border border-black rounded p-2 h-fit text-sm">{band.genre ? band.genre : null}</span>
                         {band.start ? <span className="bg-white text-black border border-black rounded h-fit p-2">{band.start} - {band.end}</span> : null}

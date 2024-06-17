@@ -14,7 +14,7 @@ export function getDay(chosenDay) {
   const weekReverse = Object.fromEntries(
       Object.entries(week).map(([full, abbr]) => [abbr, full])
   );
-  return {short: week[chosenDay], full: weekReverse[chosenDay]};
+  return {short: week[chosenDay], full: weekReverse[chosenDay], weekShort: week, weekLong: weekReverse};
 }
 
 // filtrere væk breaks og cancellations

@@ -14,10 +14,10 @@ export default async function FancyCampCounter({stage, pos}) {
         </figure>
         <div className="flex flex-col gap-2 items-center">
         <p className="text-center">{stage.available} <span className="text-sm">ledige pladser</span></p>
-        {stage.available >= 0 ?  
+        {stage.available > 0 ?  
       <Link className="bg-orange w-fit py-2 px-4 rounded" href={`/camp`} prefetch={false}>Til {stage.area}</Link>
       :   
-      <Button variant="grey">{stage.area} er fuld!</Button>
+      <Button disabled variant="grey">{stage.area} er fuld!</Button>
       }
         </div>
     </li>
