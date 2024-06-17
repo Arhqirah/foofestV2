@@ -32,7 +32,7 @@ export default function BandLive() {
 
 	const getBandInfo = (bandName) => {
 		if (bandName === "break") {
-			return { name: "break", logo: "DummyArtist.webp" };
+			return { name: "break", logo: "/assets/img/DummyArtist.webp" };
 		}
 		return dataBands.find((band) => band.name === bandName);
 	};
