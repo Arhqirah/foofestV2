@@ -52,7 +52,7 @@ export default function BandLive() {
 			if (nextAct.act === "break") {
 				return "/camp";
 			} else {
-				return `/artist/${getBandInfo(nextAct.act).slug}`;
+				return `/bands/${getBandInfo(nextAct.act).slug}`;
 			}
 		} else {
 			return "/camp";
